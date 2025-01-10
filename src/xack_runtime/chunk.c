@@ -8,7 +8,7 @@ void init_chunk(Chunk* chunk)
     chunk->code = NULL;
 }
 
-void write_chunk(Chunk* chunk, uint16_t byte, int line)
+void write_chunk(Chunk* chunk, uint16_t byte)
 {
     if (chunk->capacity < chunk->count + 1)
     {

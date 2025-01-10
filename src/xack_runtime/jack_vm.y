@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "chunk.h"
 #include "jack_vm.h"
+
+extern Chunk* the_chunk;
 %}
 
 %union {
@@ -32,8 +34,8 @@ statement: push_pop_command
 
 push_pop_command: push_pop segment INT_CONST NL;
 
-push_pop: PUSH
-| POP
+push_pop: PUSH  { write_chunk(the_chunk, OP_PUSH); }
+| POP           { write_chunk(the_chunk, OP_POP); }
 ;
 
 segment: ARGUMENT

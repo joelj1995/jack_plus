@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "chunk.h"
 #include "jack_vm.h"
 #include "jack_vm.tab.h"
 
@@ -21,9 +22,14 @@ char* addstr(char* str1, char* str2)
     return newstr;
 }
 
+Chunk* the_chunk;
 
 int main(int argc, char *argv[]) 
 {
+    Chunk chunk_on_stack;
+    the_chunk = &chunk_on_stack;
+
+    init_chunk(the_chunk);
 
     yyparse();
 
