@@ -9,6 +9,17 @@ typedef enum {
     OP_SUB
 } OpCode;
 
+typedef enum {
+    S_ARGUMENT,
+    S_LOCAL,
+    S_STATIC,
+    S_CONSTANT,
+    S_THIS,
+    S_THAT,
+    S_POINTER,
+    S_TEMP
+} Segment;
+
 typedef struct {
     int count;
     int capacity;

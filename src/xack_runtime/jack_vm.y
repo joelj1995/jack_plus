@@ -32,20 +32,20 @@ statements:
 statement: push_pop_command
 ;
 
-push_pop_command: push_pop segment INT_CONST NL;
+push_pop_command: push_pop segment INT_CONST NL { write_chunk(the_chunk, $3); }; 
 
 push_pop: PUSH  { write_chunk(the_chunk, OP_PUSH); }
 | POP           { write_chunk(the_chunk, OP_POP); }
 ;
 
-segment: ARGUMENT
-| LOCAL
-| STATIC
-| CONSTANT
-| THIS
-| THAT
-| POINTER
-| TEMP
+segment: ARGUMENT { write_chunk(the_chunk, S_ARGUMENT); }
+| LOCAL           { write_chunk(the_chunk, S_LOCAL); }
+| STATIC          { write_chunk(the_chunk, S_STATIC); }
+| CONSTANT        { write_chunk(the_chunk, S_CONSTANT); }
+| THIS            { write_chunk(the_chunk, S_THIS); }
+| THAT            { write_chunk(the_chunk, S_THAT); }
+| POINTER         { write_chunk(the_chunk, S_POINTER); }
+| TEMP            { write_chunk(the_chunk, S_TEMP); }
 ;
 
 %%
