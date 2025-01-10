@@ -1,3 +1,6 @@
+.vscode
 jack_vm.tab.c
 jack_vm.tab.h
+jack_vm.lex.c
+parser
 test.vm

@@ -6,7 +6,7 @@
 
 %%
 
-(\r)?\n         { RETURN NL; }
+(\r)?\n         { return NL; }
 [ \t\f\v]*      { }
 
 
@@ -14,6 +14,7 @@
 "pop"           { return POP; }
 
 "argument"      { return ARGUMENT; }
+"local"         { return LOCAL; }
 "static"        { return STATIC; }
 "constant"      { return CONSTANT; }
 "this"          { return THIS; }
