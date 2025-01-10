@@ -22,6 +22,9 @@
 "pointer"       { return POINTER; }
 "temp"          { return TEMP; }
 
+"add"           { return ADD; }
+"sub"           { return SUB; }
+
 ([1-9]+(0-9)*|0)          { yylval.intval = atoi(yytext); return INT_CONST; }
 [a-zA-Z_][\.a-zA-z0-9_]*  { yylval.str = dupstr(yytext); return ID; }
 

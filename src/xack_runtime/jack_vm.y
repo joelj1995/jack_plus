@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include "chunk.h"
 #include "jack_vm.h"
 %}
 
@@ -13,6 +14,8 @@
 %token NL
 %token PUSH POP
 %token ARGUMENT LOCAL STATIC CONSTANT THIS THAT POINTER TEMP
+%token ADD SUB
+
 %token <intval> INT_CONST 
 %token <str> STR_CONST
 %token <str> ID
