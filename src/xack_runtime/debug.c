@@ -62,6 +62,14 @@ void disassemble_chunk(Chunk* chunk)
             disassemble_int_constant(chunk->code[i]);
             printf("\n");
         }
+        else if (chunk->code[i] == OP_ADD)
+        {
+            printf("add\n");
+        }
+        else if (chunk->code[i] == OP_SUB)
+        {
+            printf("sub\n");
+        }
         else
         {
             printf("Op %d not recognized\n", chunk->code[i]);

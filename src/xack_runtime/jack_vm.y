@@ -30,6 +30,7 @@ statements:
 | statements statement;
 
 statement: push_pop_command
+| arith_command
 ;
 
 push_pop_command: push_pop segment INT_CONST NL { write_chunk(the_chunk, $3); }; 
@@ -46,6 +47,10 @@ segment: ARGUMENT { write_chunk(the_chunk, S_ARGUMENT); }
 | THAT            { write_chunk(the_chunk, S_THAT); }
 | POINTER         { write_chunk(the_chunk, S_POINTER); }
 | TEMP            { write_chunk(the_chunk, S_TEMP); }
+;
+
+arith_command: ADD NL { write_chunk(the_chunk, OP_ADD); }
+| SUB NL              { write_chunk(the_chunk, OP_SUB); }
 ;
 
 %%
