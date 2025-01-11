@@ -17,6 +17,7 @@ extern Chunk* the_chunk;
 %token PUSH POP
 %token ARGUMENT LOCAL STATIC CONSTANT THIS THAT POINTER TEMP
 %token ADD SUB NEG EQ GT LT AND OR NOT
+%token LABEL
 
 %token <intval> INT_CONST 
 %token <str> STR_CONST
@@ -31,6 +32,7 @@ statements:
 
 statement: push_pop_command
 | arith_command
+| label
 ;
 
 push_pop_command: push_pop segment INT_CONST NL { write_chunk(the_chunk, $3); }; 
@@ -59,6 +61,8 @@ arith_command: ADD NL { write_chunk(the_chunk, OP_ADD); }
 | OR NL               { write_chunk(the_chunk, OP_OR); }
 | NOT NL              { write_chunk(the_chunk, OP_NOT); }
 ;
+
+label: LABEL ID NL    { label_chunk(the_chunk, $2); };
 
 %%
 

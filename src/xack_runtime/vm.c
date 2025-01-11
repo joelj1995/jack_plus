@@ -54,6 +54,8 @@ int execute(Chunk* chunk) {
         uint16_t instruction = READ_WORD();
         switch (instruction)
         {
+        case OP_NOP:
+            break;
         case OP_PUSH:
         {
             uint16_t segment = READ_WORD();
