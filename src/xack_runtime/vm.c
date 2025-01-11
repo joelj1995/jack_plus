@@ -83,6 +83,11 @@ int execute(Chunk* chunk) {
                     push(vm.ram[5 + index]);
                     break;
                 }
+                case S_STATIC:
+                {
+                    push(vm.ram[16 + index]);
+                    break;
+                }
                 case S_CONSTANT:
                 {
                     push(index);
@@ -109,7 +114,6 @@ int execute(Chunk* chunk) {
                     *(vm.ram + base + index) = val;
                     break;
                 }
-
                 case S_ARGUMENT:
                 {
                     uint16_t base = vm.ram[2];
@@ -135,6 +139,12 @@ int execute(Chunk* chunk) {
                 {
                     int16_t val = pop();
                     vm.ram[5 + index] = val;
+                    break;
+                }
+                 case S_STATIC:
+                {
+                    int16_t val = pop();
+                    vm.ram[16 + index] = val;
                     break;
                 }
                 default:
