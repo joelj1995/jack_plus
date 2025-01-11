@@ -24,7 +24,7 @@ int execute(Chunk* chunk) {
     {
         vm.ram[i] = 0;
     }
-    
+
     vm.ram[0] = 256;
     vm.ram[1] = 300;
     vm.ram[2] = 400;
@@ -84,6 +84,12 @@ int execute(Chunk* chunk) {
                     push(*(vm.ram + base + index));
                     break;
                 }
+                case S_POINTER:
+                {
+                    uint16_t value = vm.ram[3+index];
+                    push(value);
+                    break;
+                }
                 case S_TEMP:
                 {
                     push(vm.ram[5 + index]);
@@ -139,6 +145,12 @@ int execute(Chunk* chunk) {
                     uint16_t base = vm.ram[4];
                     int16_t val = pop();
                     *(vm.ram + base + index) = val;
+                    break;
+                }
+                case S_POINTER:
+                {
+                    int16_t val = pop();
+                    vm.ram[3+index] = val;
                     break;
                 }
                 case S_TEMP:
