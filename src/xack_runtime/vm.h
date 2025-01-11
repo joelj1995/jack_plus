@@ -15,7 +15,7 @@ typedef struct {
     Chunk* chunk;
     uint16_t* ip;
     uint16_t stack[MAX_STACK];
-    uint16_t* stack_top;
+    int16_t* stack_top;
 } VM;
 
 extern VM vm;

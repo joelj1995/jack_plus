@@ -16,7 +16,7 @@ extern Chunk* the_chunk;
 %token NL
 %token PUSH POP
 %token ARGUMENT LOCAL STATIC CONSTANT THIS THAT POINTER TEMP
-%token ADD SUB
+%token ADD SUB NEG
 
 %token <intval> INT_CONST 
 %token <str> STR_CONST
@@ -51,6 +51,7 @@ segment: ARGUMENT { write_chunk(the_chunk, S_ARGUMENT); }
 
 arith_command: ADD NL { write_chunk(the_chunk, OP_ADD); }
 | SUB NL              { write_chunk(the_chunk, OP_SUB); }
+| NEG NL              { write_chunk(the_chunk, OP_NEG); }
 ;
 
 %%

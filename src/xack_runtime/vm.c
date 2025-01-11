@@ -2,13 +2,13 @@
 
 VM vm;
 
-void push(uint16_t word)
+void push(int16_t word)
 {
     *vm.stack_top = word;
     vm.stack_top++; 
 }
 
-uint16_t pop()
+int16_t pop()
 {
     vm.stack_top--;
     return *vm.stack_top;
@@ -22,7 +22,7 @@ int execute(Chunk* chunk) {
 
     while(true) {
         printf("      ");
-        for (uint16_t* slot = vm.stack; slot < vm.stack_top; slot++)
+        for (int16_t* slot = vm.stack; slot < vm.stack_top; slot++)
         {
             printf("[%d]", *slot);
         }
@@ -53,17 +53,21 @@ int execute(Chunk* chunk) {
         }
         case OP_ADD: 
         {
-            uint16_t b = pop();
-            uint16_t a = pop();
+            int16_t b = pop();
+            int16_t a = pop();
             push(a + b);
             break;
         }
         case OP_SUB:
         {
-            uint16_t b = pop();
-            uint16_t a = pop();
+            int16_t b = pop();
+            int16_t a = pop();
             push(a - b);
             break;
+        }
+        case OP_NEG:
+        {
+            push(-pop());
         }
         default:
             printf("Op %d not implemented\n", instruction);

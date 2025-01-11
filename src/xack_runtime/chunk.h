@@ -6,7 +6,8 @@ typedef enum {
     OP_PUSH,
     OP_POP,
     OP_ADD,
-    OP_SUB
+    OP_SUB,
+    OP_NEG
 } OpCode;
 
 typedef enum {
