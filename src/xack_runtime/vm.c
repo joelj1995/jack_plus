@@ -24,6 +24,12 @@ int execute(Chunk* chunk) {
     {
         vm.ram[i] = 0;
     }
+    
+    vm.ram[0] = 256;
+    vm.ram[1] = 300;
+    vm.ram[2] = 400;
+    vm.ram[3] = 3000;
+    vm.ram[4] = 3010;
 
     while(true) {
         printf("      ");
