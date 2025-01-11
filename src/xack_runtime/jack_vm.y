@@ -18,7 +18,7 @@ int current_label = 0;
 %token PUSH POP
 %token ARGUMENT LOCAL STATIC CONSTANT THIS THAT POINTER TEMP
 %token ADD SUB NEG EQ GT LT AND OR NOT
-%token LABEL GOTO
+%token LABEL GOTO IF_GOTO
 
 %token <intval> INT_CONST 
 %token <str> STR_CONST
@@ -65,6 +65,7 @@ arith_command: ADD NL { write_chunk(the_chunk, OP_ADD); }
 
 branching_command: LABEL ID NL    { label_chunk(the_chunk, $2); }
 | GOTO ID NL                      { label_goto(the_chunk, OP_GOTO, $2); }
+| IF_GOTO ID NL                   { label_goto(the_chunk, OP_IF_GOTO, $2); }
 ;
 
 %%

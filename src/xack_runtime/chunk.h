@@ -15,7 +15,8 @@ typedef enum {
     OP_AND,
     OP_OR,
     OP_NOT,
-    OP_GOTO
+    OP_GOTO,
+    OP_IF_GOTO
 } OpCode;
 
 typedef enum {

@@ -238,6 +238,18 @@ int execute(Chunk* chunk) {
             vm.ip = vm.chunk->code + READ_WORD();
             break;
         }
+        case OP_IF_GOTO:
+        {
+            if (pop() == -1)
+            {
+                vm.ip = vm.chunk->code + READ_WORD();
+            }
+            else
+            {
+                READ_WORD();
+            }
+            break;
+        }
         default:
             printf("Op %d not implemented\n", instruction);
             break;
