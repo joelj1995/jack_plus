@@ -33,6 +33,13 @@ int execute(Chunk* chunk) {
         }
         printf("\n");
 
+    printf("      ");
+        for (int i = 0; i < 16; i++)
+        {
+            printf("RAM[%d]=%d; ", i, vm.ram[i]);
+        }
+        printf("\n");
+
         if (vm.ip >= chunk->code + chunk->count)  {
             printf("End of input reached\n");
             break;
