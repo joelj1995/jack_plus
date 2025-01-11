@@ -51,6 +51,11 @@ int execute(Chunk* chunk) {
             break;
         case OP_POP:
             break;
+        case OP_ADD:
+            uint16_t b = pop();
+            uint16_t a = pop();
+            push(a + b);
+            break;
         default:
             printf("Op %d not implemented\n", instruction);
             break;
