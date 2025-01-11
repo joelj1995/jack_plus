@@ -37,6 +37,7 @@ int execute(Chunk* chunk) {
         switch (instruction)
         {
         case OP_PUSH:
+        {
             uint16_t segment = READ_WORD();
             uint16_t index = READ_WORD();
             switch (segment)
@@ -49,13 +50,21 @@ int execute(Chunk* chunk) {
                     return INTERPRET_RUNTIME_ERROR;
             }
             break;
-        case OP_POP:
-            break;
-        case OP_ADD:
+        }
+        case OP_ADD: 
+        {
             uint16_t b = pop();
             uint16_t a = pop();
             push(a + b);
             break;
+        }
+        case OP_SUB:
+        {
+            uint16_t b = pop();
+            uint16_t a = pop();
+            push(a - b);
+            break;
+        }
         default:
             printf("Op %d not implemented\n", instruction);
             break;
