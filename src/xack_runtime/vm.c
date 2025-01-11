@@ -75,6 +75,7 @@ int execute(Chunk* chunk) {
         case OP_NEG:
         {
             push(-pop());
+            break;
         }
         case OP_GT:
         {
@@ -88,6 +89,25 @@ int execute(Chunk* chunk) {
             int16_t y = pop();
             int16_t x = pop();
             push(JACK_BOOL(x < y));
+            break;
+        }
+        case OP_AND:
+        {
+            int16_t y = pop();
+            int16_t x = pop();
+            push(x & y);
+            break;
+        }
+        case OP_OR:
+        {
+            int16_t y = pop();
+            int16_t x = pop();
+            push(x | y);
+            break;
+        }
+        case OP_NOT:
+        {
+            push(~pop());
             break;
         }
         default:
