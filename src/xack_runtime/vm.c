@@ -15,6 +15,7 @@ int16_t pop()
 }
 
 int execute(Chunk* chunk) {
+    replace_labels(chunk);
 #define READ_WORD() *vm.ip++;
     vm.chunk = chunk;
     vm.ip = vm.chunk->code;
@@ -230,6 +231,11 @@ int execute(Chunk* chunk) {
         case OP_NOT:
         {
             push(~pop());
+            break;
+        }
+        case OP_GOTO:
+        {
+            vm.ip = vm.chunk->code + READ_WORD();
             break;
         }
         default:

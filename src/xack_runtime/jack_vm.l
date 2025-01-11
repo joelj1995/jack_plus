@@ -33,6 +33,7 @@
 "not"           { return NOT; }
 
 "label"         { return LABEL; }
+"goto"          { return GOTO; }
 
 [+-]?[0-9]+               { yylval.intval = atoi(yytext); return INT_CONST; }
 [a-zA-Z_][\.a-zA-z0-9_]*  { yylval.str = dupstr(yytext); return ID; }
