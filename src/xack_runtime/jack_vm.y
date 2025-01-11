@@ -53,6 +53,11 @@ arith_command: ADD NL { write_chunk(the_chunk, OP_ADD); }
 | SUB NL              { write_chunk(the_chunk, OP_SUB); }
 | NEG NL              { write_chunk(the_chunk, OP_NEG); }
 | EQ NL               { write_chunk(the_chunk, OP_EQ); }
+| GT NL               { write_chunk(the_chunk, OP_GT); }
+| LT NL               { write_chunk(the_chunk, OP_LT); }
+| AND NL              { write_chunk(the_chunk, OP_AND); }
+| OR NL               { write_chunk(the_chunk, OP_OR); }
+| NOT NL              { write_chunk(the_chunk, OP_NOT); }
 ;
 
 %%

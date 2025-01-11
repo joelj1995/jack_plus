@@ -8,7 +8,12 @@ typedef enum {
     OP_ADD,
     OP_SUB,
     OP_NEG,
-    OP_EQ
+    OP_EQ,
+    OP_GT,
+    OP_LT,
+    OP_AND,
+    OP_OR,
+    OP_NOT
 } OpCode;
 
 typedef enum {

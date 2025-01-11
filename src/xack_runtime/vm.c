@@ -76,6 +76,20 @@ int execute(Chunk* chunk) {
         {
             push(-pop());
         }
+        case OP_GT:
+        {
+            int16_t y = pop();
+            int16_t x = pop();
+            push(JACK_BOOL(x > y));
+            break;
+        }
+        case OP_LT:
+        {
+            int16_t y = pop();
+            int16_t x = pop();
+            push(JACK_BOOL(x < y));
+            break;
+        }
         default:
             printf("Op %d not implemented\n", instruction);
             break;
