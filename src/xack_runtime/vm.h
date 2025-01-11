@@ -6,6 +6,8 @@
 
 #define MAX_STACK 256
 
+#define JACK_BOOL(b) (b) ? -1 : 0
+
 typedef enum {
     INTERPRET_OK,
     INTERPRET_RUNTIME_ERROR

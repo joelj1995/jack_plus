@@ -65,6 +65,13 @@ int execute(Chunk* chunk) {
             push(a - b);
             break;
         }
+        case OP_EQ:
+        {
+            int16_t y = pop();
+            int16_t x = pop();
+            push(JACK_BOOL(x == y));
+            break;
+        }
         case OP_NEG:
         {
             push(-pop());
