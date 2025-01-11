@@ -20,6 +20,11 @@ int execute(Chunk* chunk) {
     vm.ip = vm.chunk->code;
     vm.stack_top = vm.stack;
 
+    for (int i = 0; i < MEMORY_LENGTH; i++)
+    {
+        vm.ram[i] = 0;
+    }
+
     while(true) {
         printf("      ");
         for (int16_t* slot = vm.stack; slot < vm.stack_top; slot++)
@@ -42,8 +47,29 @@ int execute(Chunk* chunk) {
             uint16_t index = READ_WORD();
             switch (segment)
             {
+                case S_LOCAL:
+                    uint16_t base = vm.ram[1];
+                    push(*(vm.ram + base + index));
+                    break;
                 case S_CONSTANT:
                     push(index);
+                    break;
+                default:
+                    printf("Segment %d not implemented.\n", segment);
+                    return INTERPRET_RUNTIME_ERROR;
+            }
+            break;
+        }
+        case OP_POP:
+        {
+            uint16_t segment = READ_WORD();
+            uint16_t index = READ_WORD();
+            switch (segment)
+            {
+                case S_LOCAL:
+                    uint16_t base = vm.ram[1];
+                    int16_t val = pop();
+                    *(vm.ram + base + index) = val;
                     break;
                 default:
                     printf("Segment %d not implemented.\n", segment);

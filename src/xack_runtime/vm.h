@@ -5,6 +5,7 @@
 #include "chunk.h"
 
 #define MAX_STACK 256
+#define MEMORY_LENGTH 24577
 
 #define JACK_BOOL(b) (b) ? -1 : 0
 
@@ -16,8 +17,9 @@ typedef enum {
 typedef struct {
     Chunk* chunk;
     uint16_t* ip;
-    uint16_t stack[MAX_STACK];
+    int16_t stack[MAX_STACK];
     int16_t* stack_top;
+    int16_t ram[MEMORY_LENGTH];
 } VM;
 
 extern VM vm;
