@@ -48,27 +48,44 @@ int execute(Chunk* chunk) {
             switch (segment)
             {
                 case S_LOCAL:
+                {
                     uint16_t base = vm.ram[1];
                     push(*(vm.ram + base + index));
                     break;
+                }
                 case S_ARGUMENT:
+                {
                     uint16_t base = vm.ram[2];
                     push(*(vm.ram + base + index));
                     break;
+                }
                 case S_THIS:
+                {
                     uint16_t base = vm.ram[3];
                     push(*(vm.ram + base + index));
                     break;
+                }
                 case S_THAT:
+                {
                     uint16_t base = vm.ram[4];
                     push(*(vm.ram + base + index));
                     break;
+                }
+                case S_TEMP:
+                {
+                    push(vm.ram[5 + index]);
+                    break;
+                }
                 case S_CONSTANT:
+                {
                     push(index);
                     break;
+                }
                 default:
+                {
                     printf("Segment %d not implemented.\n", segment);
                     return INTERPRET_RUNTIME_ERROR;
+                }
             }
             break;
         }
@@ -79,25 +96,40 @@ int execute(Chunk* chunk) {
             switch (segment)
             {
                 case S_LOCAL:
+                {
                     uint16_t base = vm.ram[1];
                     int16_t val = pop();
                     *(vm.ram + base + index) = val;
                     break;
+                }
+
                 case S_ARGUMENT:
+                {
                     uint16_t base = vm.ram[2];
                     int16_t val = pop();
                     *(vm.ram + base + index) = val;
                     break;
+                }
                 case S_THIS:
+                {
                     uint16_t base = vm.ram[3];
                     int16_t val = pop();
                     *(vm.ram + base + index) = val;
                     break;
+                }
                 case S_THAT:
+                {
                     uint16_t base = vm.ram[4];
                     int16_t val = pop();
                     *(vm.ram + base + index) = val;
                     break;
+                }
+                case S_TEMP:
+                {
+                    int16_t val = pop();
+                    vm.ram[5 + index] = val;
+                    break;
+                }
                 default:
                     printf("Segment %d not implemented.\n", segment);
                     return INTERPRET_RUNTIME_ERROR;
