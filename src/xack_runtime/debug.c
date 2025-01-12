@@ -78,6 +78,10 @@ void disassemble_chunk(Chunk* chunk)
         {
             printf("noop\n");
         }
+        else if (chunk->code[i] = OP_IF_GOTO)
+        {
+            printf("if-goto %d\n", chunk->code[++i]);
+        }
         else
         {
             printf("Op %d not recognized\n", chunk->code[i]);
