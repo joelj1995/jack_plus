@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "compiler.h"
 #include "chunk.h"
 #include "debug.h"
 #include "jack_vm.h"
@@ -17,6 +18,7 @@ int main(int argc, char *argv[])
 
     yyparse();
 
+    compile(the_chunk);
     disassemble_chunk(the_chunk);
 
     printf("Done!\n");

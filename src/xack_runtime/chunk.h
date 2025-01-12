@@ -41,8 +41,9 @@ typedef struct {
     uint16_t* code;
     CodeLabel labels[256];
     int label_count;
-    char* goto_labels[1024];
+    CodeLabel goto_labels[256];
     int goto_label_count;
+    bool is_compiled;
 } Chunk;
 
 void init_chunk(Chunk* chunk);

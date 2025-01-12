@@ -17,7 +17,7 @@ int16_t pop()
 }
 
 int execute(Chunk* chunk) {
-    replace_labels(chunk);
+    
 #define READ_WORD() *vm.ip++;
     vm.chunk = chunk;
     vm.ip = vm.chunk->code;

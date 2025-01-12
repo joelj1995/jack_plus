@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "chunk.h"
+#include "compiler.h"
 #include "debug.h"
 #include "jack_vm.h"
 #include "jack_vm.tab.h"
@@ -17,6 +18,8 @@ int main(int argc, char *argv[])
     init_chunk(the_chunk);
 
     yyparse();
+
+    compile(the_chunk);
 
     execute(the_chunk);
 
