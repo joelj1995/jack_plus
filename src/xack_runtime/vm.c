@@ -2,16 +2,18 @@
 
 VM vm;
 
+#define HACK_SP vm.ram[0]
+
 void push(int16_t word)
 {
-    *vm.stack_top = word;
-    vm.stack_top++; 
+    vm.ram[HACK_SP] = word;
+    HACK_SP++; 
 }
 
 int16_t pop()
 {
-    vm.stack_top--;
-    return *vm.stack_top;
+    HACK_SP--;
+    return vm.ram[HACK_SP];
 }
 
 int execute(Chunk* chunk) {
@@ -19,7 +21,6 @@ int execute(Chunk* chunk) {
 #define READ_WORD() *vm.ip++;
     vm.chunk = chunk;
     vm.ip = vm.chunk->code;
-    vm.stack_top = &vm.ram[256];
 
     for (int i = 0; i < MEMORY_LENGTH; i++)
     {
@@ -34,7 +35,7 @@ int execute(Chunk* chunk) {
 
     while(true) {
         printf("      ");
-        for (int16_t* slot = &vm.ram[256]; slot < vm.stack_top; slot++)
+        for (int16_t* slot = &vm.ram[256]; slot < &vm.ram[HACK_SP]; slot++)
         {
             printf("[%d]", *slot);
         }
