@@ -17,6 +17,12 @@ int16_t pop()
 }
 
 int execute(Chunk* chunk) {
+
+    if (!chunk->is_compiled) 
+    {
+        printf("Tried to run a chunk that isn't compiled.");
+        exit(EEC_BAD_STATE);
+    }
     
 #define READ_WORD() *vm.ip++;
     vm.chunk = chunk;
