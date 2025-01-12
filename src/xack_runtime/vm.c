@@ -19,7 +19,7 @@ int execute(Chunk* chunk) {
 #define READ_WORD() *vm.ip++;
     vm.chunk = chunk;
     vm.ip = vm.chunk->code;
-    vm.stack_top = vm.stack;
+    vm.stack_top = &vm.ram[256];
 
     for (int i = 0; i < MEMORY_LENGTH; i++)
     {
@@ -34,7 +34,7 @@ int execute(Chunk* chunk) {
 
     while(true) {
         printf("      ");
-        for (int16_t* slot = vm.stack; slot < vm.stack_top; slot++)
+        for (int16_t* slot = &vm.ram[256]; slot < vm.stack_top; slot++)
         {
             printf("[%d]", *slot);
         }

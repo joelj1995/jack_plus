@@ -17,7 +17,6 @@ typedef enum {
 typedef struct {
     Chunk* chunk;
     uint16_t* ip;
-    int16_t stack[MAX_STACK];
     int16_t* stack_top;
     int16_t ram[MEMORY_LENGTH];
 } VM;
