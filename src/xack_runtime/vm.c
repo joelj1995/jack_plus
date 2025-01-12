@@ -46,6 +46,8 @@ int execute(Chunk* chunk) {
         {
             printf("RAM[%d]=%d; ", i, vm.ram[i]);
         }
+        printf("RAM[%d]=%d; ", 300, vm.ram[300]);
+        printf("RAM[%d]=%d; ", 400, vm.ram[400]);
         printf("\n");
 
         if (vm.ip >= chunk->code + chunk->count)  {
@@ -241,7 +243,7 @@ int execute(Chunk* chunk) {
         }
         case OP_IF_GOTO:
         {
-            if (pop() == -1)
+            if (pop() != 0)
             {
                 vm.ip = vm.chunk->code + READ_WORD();
             }
