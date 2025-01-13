@@ -41,6 +41,7 @@ int execute(Chunk* chunk) {
 
     while(true) {
         printf("      ");
+        
         for (int16_t* slot = &vm.ram[256]; slot < &vm.ram[HACK_SP]; slot++)
         {
             printf("[%d]", *slot);
@@ -48,6 +49,7 @@ int execute(Chunk* chunk) {
         printf("\n");
 
     printf("      ");
+        printf("IP=%05d ", vm.ip - vm.chunk->code);
         for (int i = 0; i < 16; i++)
         {
             printf("RAM[%d]=%d; ", i, vm.ram[i]);
@@ -262,15 +264,19 @@ int execute(Chunk* chunk) {
         case OP_CALL: 
         {
             push(vm.ip - vm.chunk->code);
+            vm.ip = vm.chunk->code + READ_WORD();
             break;
         }
         case OP_RETURN:
         {
+            if (vm.ram[0] == 256)
+                exit(0);
             vm.ip = &vm.chunk->code[pop() + 1];
             break;
         }
         default:
             printf("Op %d not implemented\n", instruction);
+            exit(EEC_OP_NOT_KNOWN);
             break;
         }
     }
