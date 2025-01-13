@@ -36,6 +36,12 @@ typedef struct CodeLabel {
 } CodeLabel;
 
 typedef struct {
+    char* name;
+    uint16_t arity;
+    uint16_t offset;
+} Function;
+
+typedef struct {
     int count;
     int capacity;
     uint16_t* code;
@@ -43,6 +49,8 @@ typedef struct {
     int label_count;
     CodeLabel goto_labels[256];
     int goto_label_count;
+    Function functions[256];
+    int function_count;
     bool is_compiled;
 } Chunk;
 
