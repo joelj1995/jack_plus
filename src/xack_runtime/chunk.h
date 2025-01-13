@@ -51,6 +51,7 @@ typedef struct {
     int goto_label_count;
     Function functions[256];
     int function_count;
+    uint16_t entry_point;
     bool is_compiled;
 } Chunk;
 

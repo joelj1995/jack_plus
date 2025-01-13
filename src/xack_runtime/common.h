@@ -11,7 +11,8 @@ typedef enum {
     EEC_OUT_OF_MEM,
     EEC_OP_NOT_KNOWN,
     EEC_OVERLOW,
-    EEC_BAD_STATE
+    EEC_BAD_STATE,
+    EEC_COMPILATION_ERROR
 } ExitErrorCode;
 
 #endif

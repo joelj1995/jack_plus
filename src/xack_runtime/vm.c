@@ -26,7 +26,7 @@ int execute(Chunk* chunk) {
     
 #define READ_WORD() *vm.ip++;
     vm.chunk = chunk;
-    vm.ip = vm.chunk->code;
+    vm.ip = vm.chunk->code + vm.chunk->entry_point;
 
     for (int i = 0; i < MEMORY_LENGTH; i++)
     {

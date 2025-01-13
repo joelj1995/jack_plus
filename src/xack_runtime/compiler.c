@@ -2,17 +2,6 @@
 
 #include "compiler.h"
 
-void compile(Chunk* chunk)
-{
-    if (chunk->is_compiled)
-    {
-        printf("Chunk is already compiled\n");
-        exit(EEC_BAD_STATE);
-    }
-    replace_labels(chunk);
-    chunk->is_compiled = true;
-}
-
 void replace_labels(Chunk* chunk)
 {
     for (int i = 0; i < chunk->goto_label_count; i++)
@@ -28,4 +17,30 @@ void replace_labels(Chunk* chunk)
             }
         }
     }
+}
+
+void find_entry_point(Chunk* chunk)
+{
+    for (int i = 0; i < chunk->function_count; i++)
+    {
+        if (strcmp(chunk->functions[i].name, "Main.main") == 0)
+        {
+            chunk->entry_point = chunk->functions[i].offset;
+            return;
+        }
+    }
+    printf("Could not find entry point.\n");
+    exit(EEC_COMPILATION_ERROR);
+}
+
+void compile(Chunk* chunk)
+{
+    if (chunk->is_compiled)
+    {
+        printf("Chunk is already compiled\n");
+        exit(EEC_BAD_STATE);
+    }
+    replace_labels(chunk);
+    find_entry_point(chunk);
+    chunk->is_compiled = true;
 }
