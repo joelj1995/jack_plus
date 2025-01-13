@@ -271,7 +271,7 @@ int execute(Chunk* chunk) {
         {
             if (vm.ram[0] == 256)
                 exit(0);
-            vm.ip = &vm.chunk->code[pop() + 1];
+            vm.ip = &vm.chunk->code[pop() + 2];
             break;
         }
         default:
