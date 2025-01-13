@@ -44,6 +44,7 @@ void disassemble_chunk(Chunk* chunk)
     int i = 0;
     while (i < chunk->count)
     {
+        printf("%05d    ", i);
         if (chunk->code[i] == OP_PUSH)
         {
             printf("push ");
@@ -70,6 +71,10 @@ void disassemble_chunk(Chunk* chunk)
         {
             printf("sub\n");
         }
+        else if (chunk->code[i] == OP_NOT)
+        {
+            printf("not\n");
+        }
         else if (chunk->code[i] == OP_GOTO)
         {
             printf("goto %d\n", chunk->code[++i]);
@@ -78,9 +83,13 @@ void disassemble_chunk(Chunk* chunk)
         {
             printf("noop\n");
         }
-        else if (chunk->code[i] = OP_IF_GOTO)
+        else if (chunk->code[i] == OP_IF_GOTO)
         {
             printf("if-goto %d\n", chunk->code[++i]);
+        }
+        else if (chunk->code[i] == OP_RETURN)
+        {
+            printf("return\n");
         }
         else
         {

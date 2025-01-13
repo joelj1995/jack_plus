@@ -19,6 +19,23 @@ void replace_labels(Chunk* chunk)
     }
 }
 
+void replace_calls(Chunk* chunk)
+{
+    for (int i = 0; i < chunk->function_call_count; i++)
+    {
+        char* name = chunk->function_calls[i].name;
+        for (int j = 0; j < chunk->function_count; j++)
+        {
+            char* function_name = chunk->functions[j].name;
+            if (strcmp(name, function_name) == 0)
+            {
+                printf("Found a fn match for %d at %d!\n", chunk->function_calls[i].offset, chunk->functions[j].offset);
+                chunk->code[chunk->function_calls[i].offset + 1] = chunk->functions[j].offset;
+            }
+        }
+    }
+}
+
 void find_entry_point(Chunk* chunk)
 {
     for (int i = 0; i < chunk->function_count; i++)
@@ -42,5 +59,6 @@ void compile(Chunk* chunk)
     }
     replace_labels(chunk);
     find_entry_point(chunk);
+    replace_calls(chunk);
     chunk->is_compiled = true;
 }

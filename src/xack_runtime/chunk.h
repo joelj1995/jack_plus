@@ -16,7 +16,9 @@ typedef enum {
     OP_OR,
     OP_NOT,
     OP_GOTO,
-    OP_IF_GOTO
+    OP_IF_GOTO,
+    OP_CALL,
+    OP_RETURN
 } OpCode;
 
 typedef enum {
@@ -51,6 +53,8 @@ typedef struct {
     int goto_label_count;
     Function functions[256];
     int function_count;
+    Function function_calls[256];
+    int function_call_count;
     uint16_t entry_point;
     bool is_compiled;
 } Chunk;
@@ -60,5 +64,6 @@ void write_chunk(Chunk* chunk, uint16_t byte);
 void label_goto(Chunk* chunk, uint16_t op, char* label);
 void label_chunk(Chunk* chunk, char* label);
 void replace_labels(Chunk* chunk);
+void label_call(Chunk* chunk, uint16_t arity, char* label);
 
 #endif

@@ -10,6 +10,7 @@ void init_chunk(Chunk* chunk)
     chunk->label_count = 0;
     chunk->goto_label_count = 0;
     chunk->function_count = 0;
+    chunk->function_call_count = 0;
     chunk->entry_point = 0;
     chunk->is_compiled = false;
 }
@@ -51,4 +52,13 @@ void label_function(Chunk* chunk, uint16_t arity, char* label)
     chunk->functions[chunk->function_count].name = label;
     chunk->functions[chunk->function_count].arity = arity;
     chunk->functions[chunk->function_count++].offset = (uint16_t)chunk->count;
+}
+
+void label_call(Chunk* chunk, uint16_t arity, char* label)
+{
+    chunk->function_calls[chunk->function_call_count].name = label;
+    chunk->function_calls[chunk->function_call_count].arity = arity;
+    chunk->function_calls[chunk->function_call_count++].offset = (uint16_t)chunk->count;
+    write_chunk(chunk,OP_CALL);
+    write_chunk(chunk,OP_NOP);
 }

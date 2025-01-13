@@ -259,6 +259,16 @@ int execute(Chunk* chunk) {
             }
             break;
         }
+        case OP_CALL: 
+        {
+            push(vm.ip - vm.chunk->code);
+            break;
+        }
+        case OP_RETURN:
+        {
+            vm.ip = &vm.chunk->code[pop() + 1];
+            break;
+        }
         default:
             printf("Op %d not implemented\n", instruction);
             break;

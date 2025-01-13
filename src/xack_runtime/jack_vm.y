@@ -19,7 +19,7 @@ int current_label = 0;
 %token ARGUMENT LOCAL STATIC CONSTANT THIS THAT POINTER TEMP
 %token ADD SUB NEG EQ GT LT AND OR NOT
 %token LABEL GOTO IF_GOTO
-%token FUNCTION RETURN
+%token FUNCTION RETURN CALL
 
 %token <intval> INT_CONST 
 %token <str> STR_CONST
@@ -71,7 +71,8 @@ branching_command: LABEL ID NL    { label_chunk(the_chunk, $2); }
 ;
 
 function_command: FUNCTION ID INT_CONST NL  { label_function(the_chunk, $3, $2); }
-| RETURN NL                                 { }
+| CALL ID INT_CONST NL                      { label_call(the_chunk, $3, $2);     }
+| RETURN NL                                 { write_chunk(the_chunk, OP_RETURN); }
 ;
 
 %%

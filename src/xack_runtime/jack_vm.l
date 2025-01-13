@@ -40,6 +40,7 @@
 
 "function"       { return FUNCTION; }
 "return"         { return RETURN; }
+"call"           { return CALL; }
 
 
 [+-]?[0-9]+               { yylval.intval = atoi(yytext); return INT_CONST; }
