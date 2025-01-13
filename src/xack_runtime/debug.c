@@ -71,6 +71,30 @@ void disassemble_chunk(Chunk* chunk)
         {
             printf("sub\n");
         }
+        else if (chunk->code[i] == OP_NEG)
+        {
+            printf("neg\n");
+        }
+        else if (chunk->code[i] == OP_EQ)
+        {
+            printf("eq\n");
+        }
+        else if (chunk->code[i] == OP_GT)
+        {
+            printf("gt\n");
+        }
+        else if (chunk->code[i] == OP_LT)
+        {
+            printf("lt\n");
+        }
+        else if (chunk->code[i] == OP_AND)
+        {
+            printf("and\n");
+        }
+        else if (chunk->code[i] == OP_OR)
+        {
+            printf("or\n");
+        }
         else if (chunk->code[i] == OP_NOT)
         {
             printf("not\n");
@@ -78,10 +102,6 @@ void disassemble_chunk(Chunk* chunk)
         else if (chunk->code[i] == OP_GOTO)
         {
             printf("goto %d\n", chunk->code[++i]);
-        }
-        else if (chunk->code[i] == OP_NOP)
-        {
-            printf("noop\n");
         }
         else if (chunk->code[i] == OP_IF_GOTO)
         {
@@ -91,6 +111,15 @@ void disassemble_chunk(Chunk* chunk)
         {
             printf("return\n");
         }
+        else if (chunk->code[i] == OP_CALL)
+        {
+            printf("call %d\n", chunk->code[++i]);
+        }
+        else if (chunk->code[i] == OP_NOP)
+        {
+            printf("noop\n");
+        }
+        
         else
         {
             printf("Op %d not recognized\n", chunk->code[i]);
