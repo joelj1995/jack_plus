@@ -60,8 +60,8 @@ int execute(Chunk* chunk) {
     }
 
     vm.ram[SEG_SP] = 256;    // SP
-    vm.ram[SEG_LCL] = 300;    // LCL
-    vm.ram[SEG_ARG] = 400;    // ARG
+    vm.ram[SEG_LCL] = 256;    // LCL
+    vm.ram[SEG_ARG] = 256;    // ARG
     vm.ram[SEG_THIS] = 3000;   // THIS
     vm.ram[SEG_THAT] = 3010;   // THAT
 
@@ -70,9 +70,17 @@ int execute(Chunk* chunk) {
         
         for (int16_t* slot = &vm.ram[256]; slot < &vm.ram[HACK_SP]; slot++)
         {
+            if (vm.ram[SEG_ARG] == slot - vm.ram)
+            {
+                printf("{");
+            }
+            if (vm.ram[SEG_LCL] == slot - vm.ram)
+            {
+                printf("|");
+            }
             printf("[%d]", *slot);
         }
-        printf("\n");
+        printf("}\n");
 
     printf("      ");
         printf("IP=%05d ", vm.ip - vm.chunk->code);
