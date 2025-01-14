@@ -11,7 +11,7 @@ void init_chunk(Chunk* chunk)
     chunk->goto_label_count = 0;
     chunk->function_count = 0;
     chunk->function_call_count = 0;
-    chunk->entry_point = 0;
+    chunk->entry_function_idx = -1;
     chunk->is_compiled = false;
 }
 

@@ -61,7 +61,7 @@ typedef struct {
     int function_count;
     FunctionCall function_calls[256];
     int function_call_count;
-    uint16_t entry_point;
+    int entry_function_idx;
     bool is_compiled;
 } Chunk;
 

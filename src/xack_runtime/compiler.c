@@ -48,11 +48,10 @@ void find_entry_point(Chunk* chunk)
     {
         if (strcmp(chunk->functions[i].name, "Main.main") == 0)
         {
-            chunk->entry_point = chunk->functions[i].offset;
+            chunk->entry_function_idx = i;
             return;
         }
     }
-    chunk->entry_point = 0;
 }
 
 void compile(Chunk* chunk)
@@ -62,8 +61,16 @@ void compile(Chunk* chunk)
         printf("Chunk is already compiled\n");
         exit(EEC_BAD_STATE);
     }
+    if (chunk->function_count == 0 || chunk->functions[0].offset != 0)
+    {
+        // code with no function
+        chunk->functions[chunk->function_count].n_vars = 0;
+        chunk->functions[chunk->function_count].name = "";
+        chunk->functions[chunk->function_count].offset = 0;
+        chunk->entry_function_idx = chunk->function_count++;
+    }
     replace_labels(chunk);
-    find_entry_point(chunk);
     replace_calls(chunk);
+    find_entry_point(chunk);
     chunk->is_compiled = true;
 }
