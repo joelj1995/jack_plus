@@ -313,10 +313,10 @@ int execute(Chunk* chunk) {
         }
         case OP_RETURN:
         {
-            vm.ram[SEG_LCL] = pop();
-            vm.ram[SEG_ARG] = pop();
-            vm.ram[SEG_THIS] = pop();
             vm.ram[SEG_THAT] = pop();
+            vm.ram[SEG_THIS] = pop();
+            vm.ram[SEG_ARG] = pop();
+            vm.ram[SEG_LCL] = pop();
             if (vm.ram[SEG_SP] <= 256)
                 exit(0);
             uint16_t offset = pop();
