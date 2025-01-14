@@ -62,11 +62,16 @@ int execute(Chunk* chunk) {
         vm.ram[i] = 0;
     }
 
-    vm.ram[SEG_SP] = 256 + entry_fn.n_vars;    // SP
+    vm.ram[SEG_SP] = 256;    // SP
     vm.ram[SEG_LCL] = 256;    // LCL
     vm.ram[SEG_ARG] = 256;    // ARG
     vm.ram[SEG_THIS] = 3000;   // THIS
     vm.ram[SEG_THAT] = 3010;   // THAT
+
+    for (int i = 0; i < entry_fn.n_vars; i++)
+    {
+        push(0);
+    }
 
     while(true) {
         printf("      ");
@@ -310,20 +315,34 @@ int execute(Chunk* chunk) {
             push(vm.ram[SEG_ARG]);
             push(vm.ram[SEG_THIS]);
             push(vm.ram[SEG_THAT]);
+            vm.ram[SEG_ARG] = vm.ram[SEG_SP] - 5 - callData.n_args;
             vm.ram[SEG_LCL] = vm.ram[SEG_SP];
             vm.ip = vm.chunk->code + chunk->functions[callData.function_idx].offset;
+            for (int i = 0; i < chunk->functions[callData.function_idx].n_vars; i++)
+            {
+                push(0);
+            }
             break;
         }
         case OP_RETURN:
         {
-            vm.ram[SEG_THAT] = pop();
-            vm.ram[SEG_THIS] = pop();
-            vm.ram[SEG_ARG] = pop();
-            vm.ram[SEG_LCL] = pop();
-            if (vm.ram[SEG_SP] <= 256)
-                exit(0);
-            uint16_t offset = pop();
-            vm.ip = &vm.chunk->code[offset];
+            // vm.ram[SEG_THAT] = pop();
+            // vm.ram[SEG_THIS] = pop();
+            // vm.ram[SEG_ARG] = pop();
+            // vm.ram[SEG_LCL] = pop();
+            // if (vm.ram[SEG_SP] <= 256)
+            //     exit(0);
+            // uint16_t offset = pop();
+            // vm.ip = &vm.chunk->code[offset];
+            uint16_t frame = vm.ram[SEG_LCL];
+            uint16_t retAddress = vm.ram[frame-5];
+            vm.ram[vm.ram[SEG_ARG]] = pop();
+            vm.ram[SEG_SP] = vm.ram[SEG_ARG] + 1;
+            vm.ram[SEG_THAT] = vm.ram[frame - 1];
+            vm.ram[SEG_THIS] = vm.ram[frame - 2];
+            vm.ram[SEG_ARG] = vm.ram[frame - 3];
+            vm.ram[SEG_LCL] = vm.ram[frame - 4];
+            vm.ip = &vm.chunk->code[retAddress];
             break;
         }
         default:
