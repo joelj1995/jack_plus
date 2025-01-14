@@ -62,7 +62,7 @@ int execute(Chunk* chunk) {
         vm.ram[i] = 0;
     }
 
-    vm.ram[SEG_SP] = 256;    // SP
+    vm.ram[SEG_SP] = 256 + entry_fn.n_vars;    // SP
     vm.ram[SEG_LCL] = 256;    // LCL
     vm.ram[SEG_ARG] = 256;    // ARG
     vm.ram[SEG_THIS] = 3000;   // THIS
@@ -301,7 +301,11 @@ int execute(Chunk* chunk) {
         case OP_CALL: 
         {
             uint16_t returnPos = vm.ip - vm.chunk->code + 1;
-            pushReturn(returnPos);
+            push(returnPos);
+            push(vm.ram[SEG_LCL]);
+            push(vm.ram[SEG_ARG]);
+            push(vm.ram[SEG_THIS]);
+            push(vm.ram[SEG_THAT]);
             int callIdx = READ_WORD();
             FunctionCall callData = chunk->function_calls[callIdx];
             vm.ip = vm.chunk->code + chunk->functions[callData.function_idx].offset;
@@ -309,9 +313,14 @@ int execute(Chunk* chunk) {
         }
         case OP_RETURN:
         {
-            if (returnStack == NULL)
+            vm.ram[SEG_LCL] = pop();
+            vm.ram[SEG_ARG] = pop();
+            vm.ram[SEG_THIS] = pop();
+            vm.ram[SEG_THAT] = pop();
+            if (vm.ram[SEG_SP] <= 256)
                 exit(0);
-            vm.ip = &vm.chunk->code[popReturn()];
+            uint16_t offset = pop();
+            vm.ip = &vm.chunk->code[offset];
             break;
         }
         default:
