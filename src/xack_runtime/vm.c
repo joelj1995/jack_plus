@@ -73,7 +73,9 @@ int execute(Chunk* chunk) {
         push(0);
     }
 
+
     while(true) {
+#ifdef DEBUG_LOGGING
         printf("      ");
         
         for (int16_t* slot = &vm.ram[256]; slot < &vm.ram[HACK_SP]; slot++)
@@ -99,7 +101,7 @@ int execute(Chunk* chunk) {
         printf("RAM[%d]=%d; ", 300, vm.ram[300]);
         printf("RAM[%d]=%d; ", 400, vm.ram[400]);
         printf("\n");
-
+#endif
         if (vm.ip >= chunk->code + chunk->count)  {
             printf("End of input reached\n");
             break;

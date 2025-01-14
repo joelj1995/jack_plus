@@ -12,7 +12,6 @@ void replace_labels(Chunk* chunk)
             char* label_name = chunk->labels[j].name;
             if (strcmp(name, label_name) == 0)
             {
-                printf("Found a match for %d at %d!\n", chunk->goto_labels[i].offset, chunk->labels[j].offset);
                 chunk->code[chunk->goto_labels[i].offset] = chunk->labels[j].offset;
             }
         }
