@@ -311,7 +311,6 @@ int execute(Chunk* chunk) {
             Function callee = chunk->functions[callData.function_idx];
             vm.ram[SEG_ARG] = vm.ram[SEG_SP] - callData.n_args;
             vm.ram[SEG_LCL] = vm.ram[SEG_SP];
-            vm.ram[SEG_SP] = vm.ram[SEG_SP] + callee.n_vars;
             vm.ip = vm.chunk->code + chunk->functions[callData.function_idx].offset;
             break;
         }
