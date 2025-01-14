@@ -308,7 +308,7 @@ int execute(Chunk* chunk) {
             int callIdx = READ_WORD();
             FunctionCall callData = chunk->function_calls[callIdx];
             Function callee = chunk->functions[callData.function_idx];
-            uint16_t returnPos = vm.ip - vm.chunk->code + 1;
+            uint16_t returnPos = vm.ip - vm.chunk->code;
             push(returnPos);
             push(vm.ram[SEG_LCL]);
             push(vm.ram[SEG_ARG]);
@@ -326,6 +326,10 @@ int execute(Chunk* chunk) {
         case OP_RETURN:
         {
             uint16_t frame = vm.ram[SEG_LCL];
+            if (frame <= 256)
+            {
+                exit(0);
+            }
             uint16_t retAddress = vm.ram[frame-5];
             vm.ram[vm.ram[SEG_ARG]] = pop();
             vm.ram[SEG_SP] = vm.ram[SEG_ARG] + 1;
