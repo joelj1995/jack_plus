@@ -40,6 +40,8 @@ int16_t pop()
     return vm.ram[HACK_SP];
 }
 
+typedef enum { SEG_SP, SEG_LCL, SEG_ARG, SEG_THIS, SEG_THAT } SEG;
+
 int execute(Chunk* chunk) {
 
     if (!chunk->is_compiled) 
@@ -57,11 +59,11 @@ int execute(Chunk* chunk) {
         vm.ram[i] = 0;
     }
 
-    vm.ram[0] = 256;
-    vm.ram[1] = 300;
-    vm.ram[2] = 400;
-    vm.ram[3] = 3000;
-    vm.ram[4] = 3010;
+    vm.ram[SEG_SP] = 256;    // SP
+    vm.ram[SEG_LCL] = 256;    // LCL
+    vm.ram[SEG_ARG] = 256;    // ARG
+    vm.ram[SEG_THIS] = 3000;   // THIS
+    vm.ram[SEG_THAT] = 3010;   // THAT
 
     while(true) {
         printf("      ");
