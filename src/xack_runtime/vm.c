@@ -4,6 +4,30 @@ VM vm;
 
 #define HACK_SP vm.ram[0]
 
+typedef struct ReturnStack {
+    struct returnStack* prev;
+    uint16_t pos;
+} ReturnStack;
+
+ReturnStack* returnStack = NULL;
+
+void pushReturn(uint16_t pos)
+{
+    ReturnStack* newReturn = malloc(sizeof(ReturnStack));
+    newReturn->prev = returnStack;
+    newReturn->pos = pos;
+    returnStack = newReturn;
+}
+
+uint16_t popReturn()
+{
+    ReturnStack* current = returnStack;
+    uint16_t result = returnStack->pos;
+    returnStack = returnStack->prev;
+    free(current);
+    return result;
+}
+
 void push(int16_t word)
 {
     vm.ram[HACK_SP] = word;
@@ -263,15 +287,16 @@ int execute(Chunk* chunk) {
         }
         case OP_CALL: 
         {
-            push(vm.ip - vm.chunk->code);
+            uint16_t returnPos = vm.ip - vm.chunk->code + 1;
+            pushReturn(returnPos);
             vm.ip = vm.chunk->code + READ_WORD();
             break;
         }
         case OP_RETURN:
         {
-            if (vm.ram[0] == 256)
+            if (returnStack == NULL)
                 exit(0);
-            vm.ip = &vm.chunk->code[pop() + 2];
+            vm.ip = &vm.chunk->code[popReturn()];
             break;
         }
         default:
