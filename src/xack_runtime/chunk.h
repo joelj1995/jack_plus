@@ -39,9 +39,15 @@ typedef struct CodeLabel {
 
 typedef struct {
     char* name;
-    uint16_t arity;
+    uint16_t n_vars;
     uint16_t offset;
 } Function;
+
+typedef struct {
+    char* name;
+    uint16_t n_args;
+    int function_idx;
+} FunctionCall;
 
 typedef struct {
     int count;
@@ -53,7 +59,7 @@ typedef struct {
     int goto_label_count;
     Function functions[256];
     int function_count;
-    Function function_calls[256];
+    FunctionCall function_calls[256];
     int function_call_count;
     uint16_t entry_point;
     bool is_compiled;
@@ -64,6 +70,6 @@ void write_chunk(Chunk* chunk, uint16_t byte);
 void label_goto(Chunk* chunk, uint16_t op, char* label);
 void label_chunk(Chunk* chunk, char* label);
 void replace_labels(Chunk* chunk);
-void label_call(Chunk* chunk, uint16_t arity, char* label);
+void label_call(Chunk* chunk, char* name, uint16_t n_args);
 
 #endif

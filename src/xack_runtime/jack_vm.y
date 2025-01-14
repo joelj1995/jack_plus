@@ -70,8 +70,8 @@ branching_command: LABEL ID NL    { label_chunk(the_chunk, $2); }
 | IF_GOTO ID NL                   { label_goto(the_chunk, OP_IF_GOTO, $2); }
 ;
 
-function_command: FUNCTION ID INT_CONST NL  { label_function(the_chunk, $3, $2); }
-| CALL ID INT_CONST NL                      { label_call(the_chunk, $3, $2);     }
+function_command: FUNCTION ID INT_CONST NL  { label_function(the_chunk, $2, $3); }
+| CALL ID INT_CONST NL                      { label_call(the_chunk, $2, $3);     }
 | RETURN NL                                 { write_chunk(the_chunk, OP_RETURN); }
 ;
 

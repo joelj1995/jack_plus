@@ -23,15 +23,21 @@ void replace_calls(Chunk* chunk)
 {
     for (int i = 0; i < chunk->function_call_count; i++)
     {
+        bool found = false;
         char* name = chunk->function_calls[i].name;
         for (int j = 0; j < chunk->function_count; j++)
         {
             char* function_name = chunk->functions[j].name;
             if (strcmp(name, function_name) == 0)
             {
-                printf("Found a fn match for %d at %d!\n", chunk->function_calls[i].offset, chunk->functions[j].offset);
-                chunk->code[chunk->function_calls[i].offset + 1] = chunk->functions[j].offset;
+                chunk->function_calls[i].function_idx = j;
+                found = true;
             }
+        }
+        if (!found)
+        {
+            printf("Could not find function matching %s.\n", name);
+            exit(EEC_COMPILATION_ERROR);
         }
     }
 }
@@ -46,8 +52,7 @@ void find_entry_point(Chunk* chunk)
             return;
         }
     }
-    printf("Could not find entry point.\n");
-    exit(EEC_COMPILATION_ERROR);
+    chunk->entry_point = 0;
 }
 
 void compile(Chunk* chunk)

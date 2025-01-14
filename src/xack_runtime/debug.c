@@ -113,7 +113,9 @@ void disassemble_chunk(Chunk* chunk)
         }
         else if (chunk->code[i] == OP_CALL)
         {
-            printf("call %d\n", chunk->code[++i]);
+            int callIdx = chunk->code[++i];
+            FunctionCall callData = chunk->function_calls[callIdx];
+            printf("call %d -> %d\n", callIdx, chunk->functions[callData.function_idx].offset);
         }
         else if (chunk->code[i] == OP_NOP)
         {
