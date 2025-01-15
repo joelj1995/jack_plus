@@ -12,7 +12,7 @@
   </Target>
 
   <Target Name="CleanParser" AfterTargets="CoreClean">
-	  <RemoveDir Directories="generated"  />
+	  <RemoveDir Directories="generated" />
   </Target>
 
   <ItemGroup>
