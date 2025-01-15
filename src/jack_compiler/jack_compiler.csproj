@@ -7,8 +7,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <Target Name="GenerateParser" AfterTargets="CoreClean">
+  <Target Name="GenerateParser" AfterTargets="CoreCompile">
     <Exec Command="java org.antlr.v4.Tool -o generated JackParser.g4 -Dlanguage=CSharp" />
+  </Target>
+
+  <Target Name="CleanParser" AfterTargets="CoreClean">
+	  <RemoveDir Directories="generated"  />
   </Target>
 
   <ItemGroup>
