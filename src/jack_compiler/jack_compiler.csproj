@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <Target Name="GenerateParser" AfterTargets="CoreClean">
-    <Exec Command="java org.antlr.v4.Tool -o generated JackParser.g4 -Dlanguage=CSharp"/>
+    <Exec Command="java org.antlr.v4.Tool -o generated JackParser.g4 -Dlanguage=CSharp" />
   </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+  </ItemGroup>
 
 </Project>
