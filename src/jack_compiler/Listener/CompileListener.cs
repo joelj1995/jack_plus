@@ -11,7 +11,10 @@ namespace jack_compiler.Listener
     {
         public override void EnterClass([NotNull] JackParserParser.ClassContext context)
         {
-            Console.WriteLine("Got here");
+            this.className = context.ID().GetText();
+            Console.WriteLine("The class name is: " + this.className);
         }
+
+        private string className = string.Empty;
     }
 }
