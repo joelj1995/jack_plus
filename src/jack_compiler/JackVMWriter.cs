@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,11 @@ namespace jack_compiler
 {
     internal class JackVMWriter
     {
+        public JackVMWriter(StreamWriter writer)
+        {
+            this.writer = new IndentedTextWriter(writer, "    ");
+        }
+
         public void WritePush()
         {
 
@@ -40,12 +46,19 @@ namespace jack_compiler
 
         public void WriteFunction(string name, int nArgs)
         {
-
+            writer.WriteLine($"function {name} {nArgs}");
         }
 
         public void WriteReturn()
         {
 
         }
+
+        public void Flush()
+        {
+            writer.Flush();
+        }
+
+        private readonly IndentedTextWriter writer;
     }
 }

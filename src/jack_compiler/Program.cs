@@ -12,12 +12,17 @@ internal class Program
             return;
         }
         var fileStream = File.OpenRead(args[0]);
+        var outFileStream = File.OpenWrite("out.vm");
         AntlrInputStream stream = new AntlrInputStream(fileStream);
         JackParserLexer lexer = new JackParserLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JackParserParser parser = new JackParserParser(tokens);
         ParseTreeWalker walker = new ParseTreeWalker();
-        CompileListener compiler = new CompileListener();
+        CompileListener compiler = new CompileListener(
+            new jack_compiler.JackVMWriter(new StreamWriter(outFileStream))
+            {
+
+            });
         IParseTree tree = parser.@class();
         walker.Walk(compiler, tree);
     }

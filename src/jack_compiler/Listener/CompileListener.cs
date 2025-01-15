@@ -7,14 +7,24 @@ using Antlr4.Runtime.Misc;
 
 namespace jack_compiler.Listener
 {
-    internal class CompileListener : JackParserBaseListener
+    internal partial class CompileListener : JackParserBaseListener
     {
+        public CompileListener(JackVMWriter writer) 
+        {
+            this.writer = writer;
+        }
+
         public override void EnterClass([NotNull] JackParserParser.ClassContext context)
         {
             this.className = context.ID().GetText();
-            Console.WriteLine("The class name is: " + this.className);
+        }
+
+        public override void ExitClass([NotNull] JackParserParser.ClassContext context)
+        {
+            writer.Flush();
         }
 
         private string className = string.Empty;
+        private readonly JackVMWriter writer;
     }
 }

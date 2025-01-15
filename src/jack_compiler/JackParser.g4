@@ -2,4 +2,8 @@ grammar JackParser;
 
 import JackLexer;
 
-class: CLASS ID '{' '}';
+class: CLASS ID '{' subroutineDec* '}';
+
+subroutineDec: subroutineKind ID '(' ')';
+
+subroutineKind: CONSTRUCTOR | FUNCTION | METHOD;
