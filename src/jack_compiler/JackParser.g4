@@ -13,7 +13,7 @@ classVarDecType: 'static' | 'field';
 
 type: 'int' | 'char' | 'boolean' | ID;
 
-subroutineDec: subroutineKind ID '(' parameterList ')' subroutineBody;
+subroutineDec: subroutineKind type ID '(' parameterList ')' subroutineBody;
 
 subroutineKind: CONSTRUCTOR | FUNCTION | METHOD;
 
@@ -35,7 +35,7 @@ statement: letStatement
     | returnStatement
     ;
 
-letStatement: LET ID ('[' expression ']') ? '=' expression;
+letStatement: LET ID ('[' expression ']') ? '=' expression ';';
 
 ifStatement: IF '(' expression ')' '{' statements '}' (ELSE '{' statements '}')?;
 
