@@ -44,7 +44,14 @@ namespace jack_compiler
 
         public int VarCount(VarKind kind)
         {
-            return entries.Values.Where(v => v.Kind == kind).Max(e => e.Index);
+            try
+            {
+                return entries.Values.Where(v => v.Kind == kind).Max(e => e.Index);
+            }
+            catch (InvalidOperationException)
+            {
+                return 0;
+            }
         }
 
         public VarKind KindOf(string name)
@@ -69,6 +76,15 @@ namespace jack_compiler
         public int IndexOf(string name)
         {
             return entries[name].Index;
+        }
+
+        public void Dump()
+        {
+            Console.WriteLine("Contents:");
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"{entry.Key}\t{entry.Value.Kind}\t{entry.Value.Index}\t{entry.Value.Type}");
+            }
         }
 
         private readonly Dictionary<string, SymbolTableEntry> entries = new();

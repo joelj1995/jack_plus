@@ -26,5 +26,6 @@ namespace jack_compiler.Listener
 
         private string className = string.Empty;
         private readonly JackVMWriter writer;
+        private readonly SymbolTable symbolTable = new SymbolTable();
     }
 }
