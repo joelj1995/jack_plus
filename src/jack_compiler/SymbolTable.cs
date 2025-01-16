@@ -38,7 +38,7 @@ namespace jack_compiler
                 Name = name,
                 Kind = kind,
                 Type = type,
-                Index = VarCount(kind) + 1
+                Index = VarCount(kind)
             });
         }
 
