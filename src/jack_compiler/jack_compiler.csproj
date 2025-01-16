@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <Target Name="GenerateParser" AfterTargets="CoreCompile">
+  <Target Name="GenerateParser" BeforeTargets="CoreCompile">
     <Exec Command="java org.antlr.v4.Tool -o generated JackParser.g4 -Dlanguage=CSharp" />
   </Target>
 
