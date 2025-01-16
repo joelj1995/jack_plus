@@ -12,7 +12,7 @@ internal class Program
             return;
         }
         var fileStream = File.OpenRead(args[0]);
-        var outFileStream = File.OpenWrite("out.vm");
+        var outFileStream = File.Open("out.vm", FileMode.Create);
         AntlrInputStream stream = new AntlrInputStream(fileStream);
         JackParserLexer lexer = new JackParserLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
