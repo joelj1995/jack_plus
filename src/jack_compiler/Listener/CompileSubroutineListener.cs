@@ -14,6 +14,12 @@ namespace jack_compiler.Listener
             var id = context.ID().GetText();
             writer.WriteFunction($"{className}.{id}", 0);
             symbolTable.Reset();
+            writer.PushIndent();
+        }
+
+        public override void ExitSubroutineBody([NotNull] JackParserParser.SubroutineBodyContext context)
+        {
+            writer.PopIndent();
         }
     }
 }

@@ -95,6 +95,16 @@ namespace jack_compiler
             writer.Flush();
         }
 
+        public void PushIndent()
+        {
+            writer.Indent++;
+        }
+
+        public void PopIndent()
+        {
+            writer.Indent--;
+        }
+
         private readonly IndentedTextWriter writer;
     }
 }
