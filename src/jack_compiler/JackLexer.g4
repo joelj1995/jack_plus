@@ -1,5 +1,6 @@
 lexer grammar JackLexer;
 
+
 CLASS       : 'class';
 CONSTRUCTOR : 'constructor';
 FUNCTION    : 'function';
@@ -25,3 +26,8 @@ INT_CONST   : [0-9]+;
 STR_CONST   : '"' .*? '"';
 ID          : [_a-zA-Z][_a-zA-Z0-9]*;
 WS          : [ \t\n\r] -> skip;
+
+COMMENT:
+	'/*' .*? '*/' -> channel(HIDDEN); // match anything between /* and */
+
+LINE_COMMENT: '//' ~[\r\n]* '\r'? '\n' -> channel(HIDDEN);

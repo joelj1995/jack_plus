@@ -4,7 +4,7 @@ import JackLexer;
 
 class: CLASS ID '{' classVarDec* subroutineDec* '}';
 
-classVarDec: classVarDecType type classVarDecIDList ';';
+classVarDec: classVarDecType type classVarDecIDList ';' ;
 
 classVarDecIDList: ID # LastID
     | ID ',' classVarDecIDList # ListedID;
@@ -13,11 +13,15 @@ classVarDecType: 'static' | 'field';
 
 type: 'int' | 'char' | 'boolean' | ID;
 
-subroutineDec: subroutineKind ID '(' parameterList ')';
+subroutineDec: subroutineKind ID '(' parameterList ')' subroutineBody;
 
 subroutineKind: CONSTRUCTOR | FUNCTION | METHOD;
 
 parameterList: (parameter (',' parameter)*)?;
+
+subroutineBody: '{' varDec* statements '}';
+
+varDec: 'var' type ID (',' ID)* ';';
 
 parameter: type ID;
 
