@@ -14,10 +14,11 @@ namespace jack_compiler.Listener
             var objectOrClassId = context.ID(0).GetText();
             var methodId = context.ID(1).GetText();
             var kind = symbolTable.KindOf(objectOrClassId);
+            var nArgs = context.expressionList().expression().Length;
             switch (kind)
             {
                 case VarKind.NONE:
-                    writer.WriteCall($"{objectOrClassId}.{methodId}", 0);
+                    writer.WriteCall($"{objectOrClassId}.{methodId}", nArgs);
                     break;
                 case VarKind.STATIC:
                     // TODO
@@ -31,7 +32,7 @@ namespace jack_compiler.Listener
                 case VarKind.VAR:
                     var type = symbolTable.TypeOf(objectOrClassId);
                     writer.WritePush(JackVMWriter.JackSegment.LOCAL, symbolTable.IndexOf(objectOrClassId));
-                    writer.WriteCall($"{type}.{methodId}", 0);
+                    writer.WriteCall($"{type}.{methodId}", nArgs + 1);
                     break;
                 default: throw new NotImplementedException();
             }
