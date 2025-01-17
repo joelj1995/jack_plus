@@ -11,6 +11,7 @@ namespace jack_compiler
     {
         public enum JackSegment
         {
+            CONSANT,
             ARGUMENT,
             LOCAL,
             STATIC,
@@ -30,6 +31,9 @@ namespace jack_compiler
             string segmentName = String.Empty;
             switch (segment)
             {
+                case JackSegment.CONSANT:
+                    segmentName = "constant";
+                    break;
                 case JackSegment.ARGUMENT:
                     segmentName = "argument";
                     break;
@@ -60,6 +64,7 @@ namespace jack_compiler
             string segmentName = String.Empty;
             switch (segment)
             {
+                case JackSegment.CONSANT: throw new InvalidOperationException();
                 case JackSegment.ARGUMENT:
                     segmentName = "argument";
                     break;
@@ -112,7 +117,7 @@ namespace jack_compiler
 
         public void WriteReturn()
         {
-
+            writer.WriteLine("return");
         }
 
         public void Flush()

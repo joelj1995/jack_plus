@@ -14,5 +14,19 @@ namespace jack_compiler.Listener
             var idx = symbolTable.IndexOf(context.ID().GetText());
             writer.WritePop(JackVMWriter.JackSegment.LOCAL, idx);
         }
+
+        public override void ExitDoStatement([NotNull] JackParserParser.DoStatementContext context)
+        {
+            writer.WritePop(JackVMWriter.JackSegment.TEMP, 0);
+        }
+
+        public override void ExitReturnStatement([NotNull] JackParserParser.ReturnStatementContext context)
+        {
+            if (context.expression() == null)
+            {
+                writer.WritePush(JackVMWriter.JackSegment.CONSANT, 0);
+            }
+            writer.WriteReturn();
+        }
     }
 }
