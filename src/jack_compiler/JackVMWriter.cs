@@ -25,9 +25,34 @@ namespace jack_compiler
             this.writer = new IndentedTextWriter(writer, "    ");
         }
 
-        public void WritePush()
+        public void WritePush(JackSegment segment, int index)
         {
-
+            string segmentName = String.Empty;
+            switch (segment)
+            {
+                case JackSegment.ARGUMENT:
+                    segmentName = "argument";
+                    break;
+                case JackSegment.LOCAL:
+                    segmentName = "local";
+                    break;
+                case JackSegment.STATIC:
+                    segmentName = "static";
+                    break;
+                case JackSegment.THIS:
+                    segmentName = "this";
+                    break;
+                case JackSegment.THAT:
+                    segmentName = "that";
+                    break;
+                case JackSegment.POINTER:
+                    segmentName = "pointer";
+                    break;
+                case JackSegment.TEMP:
+                    segmentName = "temp";
+                    break;
+            }
+            writer.WriteLine($"push {segmentName} {index}");
         }
 
         public void WritePop(JackSegment segment, int index)
@@ -57,7 +82,7 @@ namespace jack_compiler
                     segmentName = "temp";
                     break;
             }
-            writer.Write($"pop {segmentName} {index}");
+            writer.WriteLine($"pop {segmentName} {index}");
         }
 
         public void WriteArithmetic()
@@ -77,7 +102,7 @@ namespace jack_compiler
 
         public void WriteCall(string name, int nArgs)
         {
-
+            writer.WriteLine($"call {name} {nArgs}");
         }
 
         public void WriteFunction(string name, int nArgs)

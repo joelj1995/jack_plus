@@ -50,7 +50,10 @@ expression: term (op term)*;
 
 term: INT_CONST | STR_CONST | keywordConstant | ID | ID '[' expression ']' | '(' expression ')' | unaryOp term | subroutineCall;
 
-subroutineCall: ID '(' expressionList ')' | ID '.' ID '(' expressionList ')';
+subroutineCall: 
+    ID '(' expressionList ')'           # thisSubroutineCall
+    | ID '.' ID '(' expressionList ')'  # thatSubroutineCall
+    ;
 
 expressionList: (expression (',' expression)*)?;
 
