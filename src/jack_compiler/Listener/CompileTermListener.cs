@@ -9,6 +9,12 @@ namespace jack_compiler.Listener
 {
     internal partial class CompileListener
     {
+        public override void EnterTermIntConst([NotNull] JackParserParser.TermIntConstContext context)
+        {
+            var val = int.Parse(context.GetText());
+            writer.WritePush(JackVMWriter.JackSegment.CONSANT, val);
+        }
+
         public override void EnterTermStrConst([NotNull] JackParserParser.TermStrConstContext context)
         {
             var value = context.GetText();
