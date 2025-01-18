@@ -35,7 +35,7 @@ namespace jack_compiler.Listener
 
         public override void ExitWhileStatementExpression([NotNull] JackParserParser.WhileStatementExpressionContext context)
         {
-
+            writer.WriteArithmetic(JackVMWriter.JackCommand.NOT);
             labels.Push(labelIdx);
             writer.WriteIf($"{className}_{labelIdx}");
             labelIdx++;

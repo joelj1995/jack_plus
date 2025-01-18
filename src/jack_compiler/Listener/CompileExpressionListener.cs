@@ -9,32 +9,39 @@ namespace jack_compiler.Listener
 {
     internal partial class CompileListener
     {
-        public override void ExitThatSubroutineCall([NotNull] JackParserParser.ThatSubroutineCallContext context)
+        public override void ExitExpressionPart([NotNull] JackParserParser.ExpressionPartContext context)
         {
-            var objectOrClassId = context.ID(0).GetText();
-            var methodId = context.ID(1).GetText();
-            var kind = symbolTable.KindOf(objectOrClassId);
-            var nArgs = context.expressionList().expression().Length;
-            switch (kind)
+            var op = context.op().GetText();
+            switch (op)
             {
-                case VarKind.NONE:
-                    writer.WriteCall($"{objectOrClassId}.{methodId}", nArgs);
+                case "+":
+                    writer.WriteArithmetic(JackVMWriter.JackCommand.ADD);
                     break;
-                case VarKind.STATIC:
-                    // TODO
+                case "-":
+                    writer.WriteArithmetic(JackVMWriter.JackCommand.SUB);
                     break;
-                case VarKind.FIELD:
-                    // TODO
+                case "*":
+                    writer.WriteCall("Math.multiply", 2);
                     break;
-                case VarKind.ARG:
-                    // TODO
+                case "/":
+                    writer.WriteCall("Math.divide", 2);
                     break;
-                case VarKind.VAR:
-                    var type = symbolTable.TypeOf(objectOrClassId);
-                    writer.WritePush(JackVMWriter.JackSegment.LOCAL, symbolTable.IndexOf(objectOrClassId));
-                    writer.WriteCall($"{type}.{methodId}", nArgs + 1);
+                case "&":
+                    writer.WriteArithmetic(JackVMWriter.JackCommand.AND);
                     break;
-                default: throw new NotImplementedException();
+                case "|":
+                    writer.WriteArithmetic(JackVMWriter.JackCommand.OR);
+                    break;
+                case "<":
+                    writer.WriteArithmetic(JackVMWriter.JackCommand.LT);
+                    break;
+                case ">":
+                    writer.WriteArithmetic(JackVMWriter.JackCommand.GT);
+                    break;
+                case "=":
+                    writer.WriteArithmetic(JackVMWriter.JackCommand.EQ);
+                    break;
+                default: throw new NotImplementedException(op);
             }
         }
     }

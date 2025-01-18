@@ -28,6 +28,25 @@ namespace jack_compiler.Listener
             }
         }
 
+        public override void EnterKeywordConstant([NotNull] JackParserParser.KeywordConstantContext context)
+        {
+            var text = context.GetText();
+            switch (text)
+            {
+                case "true":
+                    writer.WritePush(JackVMWriter.JackSegment.CONSANT, 0);
+                    break;
+                case "false":
+                    writer.WritePush(JackVMWriter.JackSegment.CONSANT, -1);
+                    break;
+                case "null":
+                    writer.WritePush(JackVMWriter.JackSegment.CONSANT, 0);
+                    break;
+                case "this":
+                default: throw new NotImplementedException(text);
+            }
+        }
+
         public override void EnterTermID([NotNull] JackParserParser.TermIDContext context)
         {
             var value = context.GetText();
@@ -49,6 +68,35 @@ namespace jack_compiler.Listener
                     break;
                 case VarKind.VAR:
                     writer.WritePush(JackVMWriter.JackSegment.LOCAL, idx);
+                    break;
+                default: throw new NotImplementedException();
+            }
+        }
+
+        public override void ExitThatSubroutineCall([NotNull] JackParserParser.ThatSubroutineCallContext context)
+        {
+            var objectOrClassId = context.ID(0).GetText();
+            var methodId = context.ID(1).GetText();
+            var kind = symbolTable.KindOf(objectOrClassId);
+            var nArgs = context.expressionList().expression().Length;
+            switch (kind)
+            {
+                case VarKind.NONE:
+                    writer.WriteCall($"{objectOrClassId}.{methodId}", nArgs);
+                    break;
+                case VarKind.STATIC:
+                    // TODO
+                    break;
+                case VarKind.FIELD:
+                    // TODO
+                    break;
+                case VarKind.ARG:
+                    // TODO
+                    break;
+                case VarKind.VAR:
+                    var type = symbolTable.TypeOf(objectOrClassId);
+                    writer.WritePush(JackVMWriter.JackSegment.LOCAL, symbolTable.IndexOf(objectOrClassId));
+                    writer.WriteCall($"{type}.{methodId}", nArgs + 1);
                     break;
                 default: throw new NotImplementedException();
             }

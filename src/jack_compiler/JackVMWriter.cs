@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Antlr4.Runtime.Atn.SemanticContext;
 
 namespace jack_compiler
 {
@@ -19,6 +20,19 @@ namespace jack_compiler
             THAT,
             POINTER,
             TEMP
+        }
+
+        public enum JackCommand
+        {
+            ADD,
+            SUB,
+            NEG,
+            EQ,
+            GT,
+            LT,
+            AND,
+            OR,
+            NOT
         }
 
         public JackVMWriter(StreamWriter writer)
@@ -90,9 +104,39 @@ namespace jack_compiler
             writer.WriteLine($"pop {segmentName} {index}");
         }
 
-        public void WriteArithmetic()
+        public void WriteArithmetic(JackCommand command)
         {
-
+            switch (command)
+            {
+                case JackCommand.ADD:
+                    writer.WriteLine("add");
+                    break;
+                case JackCommand.SUB:
+                    writer.WriteLine("sub");
+                    break;
+                case JackCommand.NEG:
+                    writer.WriteLine("neg");
+                    break;
+                case JackCommand.EQ:
+                    writer.WriteLine("eq");
+                    break;
+                case JackCommand.GT:
+                    writer.WriteLine("gt");
+                    break;
+                case JackCommand.LT:
+                    writer.WriteLine("lt");
+                    break;
+                case JackCommand.AND:
+                    writer.WriteLine("and");
+                    break;
+                case JackCommand.OR:
+                    writer.WriteLine("or");
+                    break;
+                case JackCommand.NOT:
+                    writer.WriteLine("not");
+                    break;
+                default: throw new NotImplementedException(command.ToString());
+            }
         }
 
         public void WriteLabel(string label)

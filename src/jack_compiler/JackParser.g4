@@ -47,7 +47,8 @@ doStatement: DO subroutineCall ';';
 returnStatement: RETURN expression? ';';
 
 
-expression: term (op term)*;
+expression: term expressionPart*;
+expressionPart: op term;
 
 term: 
     INT_CONST                       #TermIntConst
