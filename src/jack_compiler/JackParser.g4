@@ -48,7 +48,16 @@ returnStatement: RETURN expression? ';';
 
 expression: term (op term)*;
 
-term: INT_CONST | STR_CONST | keywordConstant | ID | ID '[' expression ']' | '(' expression ')' | unaryOp term | subroutineCall;
+term: 
+    INT_CONST                       #TermIntConst
+    | STR_CONST                     #TermStrConst
+    | keywordConstant               #TermKeywordConst
+    | ID                            #TermID
+    | ID '[' expression ']'         #TermArray
+    | '(' expression ')'            #TermGroup
+    | unaryOp term                  #TermUnary
+    | subroutineCall                #TermSubroutineCall
+    ;
 
 subroutineCall: 
     ID '(' expressionList ')'           # thisSubroutineCall

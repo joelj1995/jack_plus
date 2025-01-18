@@ -18,11 +18,7 @@ internal class Program
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JackParserParser parser = new JackParserParser(tokens);
         ParseTreeWalker walker = new ParseTreeWalker();
-        CompileListener compiler = new CompileListener(
-            new jack_compiler.JackVMWriter(new StreamWriter(outFileStream))
-            {
-
-            });
+        CompileListener compiler = new CompileListener(new jack_compiler.JackVMWriter(new StreamWriter(outFileStream)){ });
         IParseTree tree = parser.@class();
         walker.Walk(compiler, tree);
     }
