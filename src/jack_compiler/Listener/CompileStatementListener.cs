@@ -33,9 +33,22 @@ namespace jack_compiler.Listener
             labelIdx++;
         }
 
-        public override void ExitWhileStatement([NotNull] JackParserParser.WhileStatementContext context)
+        public override void ExitWhileStatementExpression([NotNull] JackParserParser.WhileStatementExpressionContext context)
         {
 
+            labels.Push(labelIdx);
+            writer.WriteIf($"{className}_{labelIdx}");
+            labelIdx++;
+        }
+
+        public override void ExitWhileStatement([NotNull] JackParserParser.WhileStatementContext context)
+        {
+            var exitLoopLabel = labels.Pop();
+            var loolLabel = labels.Pop();
+            writer.WriteIf($"{className}_{loolLabel}");
+            writer.WriteLabel($"{className}_{exitLoopLabel}");
+            labels.Push(labelIdx);
+            labelIdx++;
         }
 
         public override void ExitDoStatement([NotNull] JackParserParser.DoStatementContext context)

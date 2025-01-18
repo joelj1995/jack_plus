@@ -39,7 +39,8 @@ letStatement: LET ID ('[' expression ']') ? '=' expression ';';
 
 ifStatement: IF '(' expression ')' '{' statements '}' (ELSE '{' statements '}')?;
 
-whileStatement: WHILE '(' expression ')' '{' statements '}';
+whileStatement: WHILE '(' whileStatementExpression ')' '{' statements '}';
+whileStatementExpression: expression;
 
 doStatement: DO subroutineCall ';';
 
