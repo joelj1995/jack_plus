@@ -46,7 +46,7 @@ namespace jack_compiler
         {
             try
             {
-                return entries.Values.Where(v => v.Kind == kind).Max(e => e.Index);
+                return entries.Values.Where(v => v.Kind == kind).Max(e => e.Index) + 1;
             }
             catch (InvalidOperationException)
             {
