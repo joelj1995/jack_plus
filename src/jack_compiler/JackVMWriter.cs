@@ -97,12 +97,15 @@ namespace jack_compiler
 
         public void WriteLabel(string label)
         {
-
+            var temp = writer.Indent;
+            writer.Indent = 0;
+            writer.WriteLine($"label {label}");
+            writer.Indent = temp;
         }
 
         public void WriteIf(string label)
         {
-
+            writer.WriteLine($"if-goto {label}");
         }
 
         public void WriteCall(string name, int nArgs)

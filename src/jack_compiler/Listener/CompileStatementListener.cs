@@ -15,6 +15,29 @@ namespace jack_compiler.Listener
             writer.WritePop(JackVMWriter.JackSegment.LOCAL, idx);
         }
 
+        public override void EnterIfStatement([NotNull] JackParserParser.IfStatementContext context)
+        {
+            writer.WriteLabel($"{className}_{labelIdx}");
+            labels.Push(labelIdx);
+            labelIdx++;
+        }
+
+        public override void ExitIfStatement([NotNull] JackParserParser.IfStatementContext context)
+        {
+        }
+
+        public override void EnterWhileStatement([NotNull] JackParserParser.WhileStatementContext context)
+        {
+            writer.WriteLabel($"{className}_{labelIdx}");
+            labels.Push(labelIdx);
+            labelIdx++;
+        }
+
+        public override void ExitWhileStatement([NotNull] JackParserParser.WhileStatementContext context)
+        {
+
+        }
+
         public override void ExitDoStatement([NotNull] JackParserParser.DoStatementContext context)
         {
             writer.WritePop(JackVMWriter.JackSegment.TEMP, 0);
