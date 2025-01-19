@@ -47,7 +47,7 @@ namespace jack_compiler.Listener
             labelIdx++;
         }
 
-        public override void EnterElseStatements([NotNull] JackParserParser.ElseStatementsContext context)
+        public override void ExitIfStatements([NotNull] JackParserParser.IfStatementsContext context)
         {
             var skipLabel = labels.Pop();
             var skipElseLabel = labelIdx;
