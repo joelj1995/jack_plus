@@ -73,6 +73,20 @@ namespace jack_compiler.Listener
             }
         }
 
+        public override void ExitTermUnary([NotNull] JackParserParser.TermUnaryContext context)
+        {
+            switch (context.unaryOp().GetText())
+            {
+                case "~":
+                    writer.WriteArithmetic(JackVMWriter.JackCommand.NOT);
+                    break;
+                case "-":
+                    writer.WriteArithmetic(JackVMWriter.JackCommand.NEG);
+                    break;
+                default: throw new NotImplementedException(context.unaryOp().GetText());
+            }
+        }
+
         public override void ExitThatSubroutineCall([NotNull] JackParserParser.ThatSubroutineCallContext context)
         {
             var objectOrClassId = context.ID(0).GetText();
