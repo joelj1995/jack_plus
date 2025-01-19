@@ -31,6 +31,15 @@ namespace jack_compiler
             entries.Clear();
         }
 
+        public void ResetLocals()
+        {
+            var toRemove = entries.Values.Where(x => x.Kind == VarKind.VAR || x.Kind == VarKind.ARG).ToList();
+            foreach (var item in toRemove)
+            {
+                entries.Remove(item.Name);
+            }
+        }
+
         public void Define(string name, string type, VarKind kind)
         {
             entries.Add(name, new SymbolTableEntry

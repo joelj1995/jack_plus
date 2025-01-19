@@ -13,12 +13,22 @@ namespace jack_compiler.Listener
         {
             var id = context.ID().GetText();
             writer.WriteFunction($"{className}.{id}", 0);
-            // symbolTable.Reset();
             writer.PushIndent();
+        }
+
+        public override void EnterParameterList([NotNull] JackParserParser.ParameterListContext context)
+        {
+            foreach (var param in context.parameter())
+            {
+                var type = param.type().GetText();
+                var name = param.ID().GetText();
+                symbolTable.Define(name, type, VarKind.ARG);
+            }
         }
 
         public override void ExitSubroutineBody([NotNull] JackParserParser.SubroutineBodyContext context)
         {
+            symbolTable.ResetLocals();
             writer.PopIndent();
         }
     }
