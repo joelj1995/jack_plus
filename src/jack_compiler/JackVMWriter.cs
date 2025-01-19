@@ -12,7 +12,7 @@ namespace jack_compiler
     {
         public enum JackSegment
         {
-            CONSANT,
+            CONSTANT,
             ARGUMENT,
             LOCAL,
             STATIC,
@@ -45,7 +45,7 @@ namespace jack_compiler
             string segmentName = String.Empty;
             switch (segment)
             {
-                case JackSegment.CONSANT:
+                case JackSegment.CONSTANT:
                     segmentName = "constant";
                     break;
                 case JackSegment.ARGUMENT:
@@ -78,7 +78,7 @@ namespace jack_compiler
             string segmentName = String.Empty;
             switch (segment)
             {
-                case JackSegment.CONSANT: throw new InvalidOperationException();
+                case JackSegment.CONSTANT: throw new InvalidOperationException();
                 case JackSegment.ARGUMENT:
                     segmentName = "argument";
                     break;

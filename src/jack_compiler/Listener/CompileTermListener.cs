@@ -12,18 +12,18 @@ namespace jack_compiler.Listener
         public override void EnterTermIntConst([NotNull] JackParserParser.TermIntConstContext context)
         {
             var val = int.Parse(context.GetText());
-            writer.WritePush(JackVMWriter.JackSegment.CONSANT, val);
+            writer.WritePush(JackVMWriter.JackSegment.CONSTANT, val);
         }
 
         public override void EnterTermStrConst([NotNull] JackParserParser.TermStrConstContext context)
         {
             var value = context.GetText();
             value = value.Substring(1, value.Length - 2);
-            writer.WritePush(JackVMWriter.JackSegment.CONSANT, value.Length);
+            writer.WritePush(JackVMWriter.JackSegment.CONSTANT, value.Length);
             writer.WriteCall("String.new", 1);
             for (int i = 0; i < value.Length; i++)
             {
-                writer.WritePush(JackVMWriter.JackSegment.CONSANT, value[i]);
+                writer.WritePush(JackVMWriter.JackSegment.CONSTANT, value[i]);
                 writer.WriteCall("String.appendChar", 2);
             }
         }
@@ -34,13 +34,14 @@ namespace jack_compiler.Listener
             switch (text)
             {
                 case "true":
-                    writer.WritePush(JackVMWriter.JackSegment.CONSANT, 0);
+                    writer.WritePush(JackVMWriter.JackSegment.CONSTANT, 1);
+                    writer.WriteArithmetic(JackVMWriter.JackCommand.NEG);
                     break;
                 case "false":
-                    writer.WritePush(JackVMWriter.JackSegment.CONSANT, -1);
+                    writer.WritePush(JackVMWriter.JackSegment.CONSTANT, 0);
                     break;
                 case "null":
-                    writer.WritePush(JackVMWriter.JackSegment.CONSANT, 0);
+                    writer.WritePush(JackVMWriter.JackSegment.CONSTANT, 0);
                     break;
                 case "this":
                     writer.WritePush(JackVMWriter.JackSegment.POINTER, 0);

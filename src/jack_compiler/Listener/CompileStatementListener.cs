@@ -97,7 +97,7 @@ namespace jack_compiler.Listener
         {
             if (context.expression() == null)
             {
-                writer.WritePush(JackVMWriter.JackSegment.CONSANT, 0);
+                writer.WritePush(JackVMWriter.JackSegment.CONSTANT, 0);
             }
             writer.WriteReturn();
         }
