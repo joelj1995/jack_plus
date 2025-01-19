@@ -43,6 +43,8 @@ namespace jack_compiler.Listener
                     writer.WritePush(JackVMWriter.JackSegment.CONSANT, 0);
                     break;
                 case "this":
+                    writer.WritePush(JackVMWriter.JackSegment.POINTER, 0);
+                    break;
                 default: throw new NotImplementedException(text);
             }
         }
