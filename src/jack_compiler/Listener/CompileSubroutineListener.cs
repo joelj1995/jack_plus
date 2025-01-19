@@ -27,7 +27,7 @@ namespace jack_compiler.Listener
 
         public override void ExitSubroutineVarDecs([NotNull] JackParserParser.SubroutineVarDecsContext context)
         {
-            writer.WriteFunction($"{className}.subroutineName", symbolTable.VarCount(VarKind.VAR));
+            writer.WriteFunction($"{className}.{subroutineName}", symbolTable.VarCount(VarKind.VAR));
             writer.PushIndent();
         }
 
