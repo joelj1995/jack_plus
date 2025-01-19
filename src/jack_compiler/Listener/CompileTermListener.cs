@@ -54,21 +54,19 @@ namespace jack_compiler.Listener
             var idx = symbolTable.IndexOf(value);
             switch (kind)
             {
-                case VarKind.NONE:
-                    
-                    break;
                 case VarKind.STATIC:
-                    // TODO
+                    writer.WritePush(JackVMWriter.JackSegment.STATIC, idx);
                     break;
                 case VarKind.FIELD:
-                    // TODO
+                    writer.WritePush(JackVMWriter.JackSegment.THIS, idx);
                     break;
                 case VarKind.ARG:
-                    // TODO
+                    writer.WritePush(JackVMWriter.JackSegment.ARGUMENT, idx);
                     break;
                 case VarKind.VAR:
                     writer.WritePush(JackVMWriter.JackSegment.LOCAL, idx);
                     break;
+                case VarKind.NONE:
                 default: throw new NotImplementedException();
             }
         }

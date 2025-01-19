@@ -12,6 +12,7 @@ namespace jack_compiler.Listener
         public override void EnterClassVarDec([NotNull] JackParserParser.ClassVarDecContext context)
         {
             currentClassVarDecType = context.type().GetText();
+            currentClassVarDecKind = context.classVarDecType().GetText();
         }
 
         public override void ExitClassVarDec([NotNull] JackParserParser.ClassVarDecContext context)
@@ -22,7 +23,16 @@ namespace jack_compiler.Listener
 
         public override void EnterLastID([NotNull] JackParserParser.LastIDContext context)
         {
-            symbolTable.Define(context.ID().GetText(), currentClassVarDecType, VarKind.FIELD);
+            switch (currentClassVarDecKind)
+            {
+                case "field":
+                    symbolTable.Define(context.ID().GetText(), currentClassVarDecType, VarKind.FIELD);
+                    break;
+                case "static":
+                    symbolTable.Define(context.ID().GetText(), currentClassVarDecType, VarKind.STATIC);
+                    break;
+                default: throw new NotImplementedException(currentClassVarDecKind);
+            }
         }
 
         public override void EnterListedID([NotNull] JackParserParser.ListedIDContext context)
@@ -31,5 +41,6 @@ namespace jack_compiler.Listener
         }
 
         string currentClassVarDecType = String.Empty;
+        string currentClassVarDecKind = String.Empty;
     }
 }

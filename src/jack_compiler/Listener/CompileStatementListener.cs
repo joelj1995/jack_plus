@@ -11,8 +11,26 @@ namespace jack_compiler.Listener
     {
         public override void ExitLetStatement([NotNull] JackParserParser.LetStatementContext context)
         {
-            var idx = symbolTable.IndexOf(context.ID().GetText());
-            writer.WritePop(JackVMWriter.JackSegment.LOCAL, idx);
+            var value = context.ID().GetText();
+            var idx = symbolTable.IndexOf(value);
+            var kind = symbolTable.KindOf(value);
+            switch (kind)
+            {
+                case VarKind.STATIC:
+                    writer.WritePop(JackVMWriter.JackSegment.STATIC, idx);
+                    break;
+                case VarKind.FIELD:
+                    writer.WritePop(JackVMWriter.JackSegment.THIS, idx);
+                    break;
+                case VarKind.ARG:
+                    writer.WritePop(JackVMWriter.JackSegment.ARGUMENT, idx);
+                    break;
+                case VarKind.VAR:
+                    writer.WritePop(JackVMWriter.JackSegment.LOCAL, idx);
+                    break;
+                case VarKind.NONE:
+                default: throw new NotImplementedException();
+            }
         }
 
         public override void EnterIfStatement([NotNull] JackParserParser.IfStatementContext context)

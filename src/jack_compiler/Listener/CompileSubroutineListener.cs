@@ -13,7 +13,7 @@ namespace jack_compiler.Listener
         {
             var id = context.ID().GetText();
             writer.WriteFunction($"{className}.{id}", 0);
-            symbolTable.Reset();
+            // symbolTable.Reset();
             writer.PushIndent();
         }
 
