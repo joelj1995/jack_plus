@@ -14,9 +14,9 @@ namespace jack_compiler.Listener
             var type = context.type().GetText();
             foreach (var id in context.ID())
             {
+                nLocals++;
                 symbolTable.Define(id.GetText(), type, VarKind.VAR);
             }
-            base.EnterVarDec(context);
         }
 
         public override void ExitVarDec([NotNull] JackParserParser.VarDecContext context)
@@ -24,5 +24,7 @@ namespace jack_compiler.Listener
             base.ExitVarDec(context);
             symbolTable.Dump();
         }
+
+        int nLocals = 0;
     }
 }

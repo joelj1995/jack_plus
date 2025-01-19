@@ -19,7 +19,8 @@ subroutineKind: CONSTRUCTOR | FUNCTION | METHOD;
 
 parameterList: (parameter (',' parameter)*)?;
 
-subroutineBody: '{' varDec* statements '}';
+subroutineBody: '{' subroutineVarDecs statements '}';
+subroutineVarDecs: varDec*;
 
 varDec: 'var' type ID (',' ID)* ';';
 

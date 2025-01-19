@@ -11,9 +11,7 @@ namespace jack_compiler.Listener
     {
         public override void EnterSubroutineDec([NotNull] JackParserParser.SubroutineDecContext context)
         {
-            var id = context.ID().GetText();
-            writer.WriteFunction($"{className}.{id}", 0);
-            writer.PushIndent();
+            subroutineName = context.ID().GetText();
         }
 
         public override void EnterParameterList([NotNull] JackParserParser.ParameterListContext context)
@@ -24,12 +22,22 @@ namespace jack_compiler.Listener
                 var name = param.ID().GetText();
                 symbolTable.Define(name, type, VarKind.ARG);
             }
+            
+        }
+
+        public override void ExitSubroutineVarDecs([NotNull] JackParserParser.SubroutineVarDecsContext context)
+        {
+            writer.WriteFunction($"{className}.subroutineName", symbolTable.VarCount(VarKind.VAR));
+            writer.PushIndent();
         }
 
         public override void ExitSubroutineBody([NotNull] JackParserParser.SubroutineBodyContext context)
         {
             symbolTable.ResetLocals();
             writer.PopIndent();
+            nLocals = 0;
         }
+
+        string subroutineName = String.Empty;
     }
 }
