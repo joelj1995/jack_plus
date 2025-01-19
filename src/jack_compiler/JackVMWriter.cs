@@ -147,6 +147,11 @@ namespace jack_compiler
             writer.Indent = temp;
         }
 
+        public void WriteGoto(string label)
+        {
+            writer.WriteLine($"goto {label}");
+        }
+
         public void WriteIf(string label)
         {
             writer.WriteLine($"if-goto {label}");

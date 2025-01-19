@@ -35,13 +35,32 @@ namespace jack_compiler.Listener
 
         public override void EnterIfStatement([NotNull] JackParserParser.IfStatementContext context)
         {
-            writer.WriteLabel($"{className}_{labelIdx}");
-            labels.Push(labelIdx);
+            
+        }
+
+        public override void ExitIfStatementExpression([NotNull] JackParserParser.IfStatementExpressionContext context)
+        {
+            writer.WriteArithmetic(JackVMWriter.JackCommand.NOT);
+            var skipLabel = labelIdx;
+            labels.Push(skipLabel);
+            writer.WriteIf($"{className}_{labelIdx}");
             labelIdx++;
         }
 
-        public override void ExitIfStatement([NotNull] JackParserParser.IfStatementContext context)
+        public override void EnterElseStatements([NotNull] JackParserParser.ElseStatementsContext context)
         {
+            var skipLabel = labels.Pop();
+            var skipElseLabel = labelIdx;
+            labels.Push(skipLabel);
+            labelIdx++;
+            writer.WriteGoto($"{className}_{skipElseLabel}");
+            writer.WriteLabel($"{className}_{skipLabel}");
+        }
+
+        public override void ExitElseStatements([NotNull] JackParserParser.ElseStatementsContext context)
+        {
+            var skipElseLabel = labels.Pop();
+            writer.WriteLabel($"{className}_{skipElseLabel}");
         }
 
         public override void EnterWhileStatement([NotNull] JackParserParser.WhileStatementContext context)
@@ -62,8 +81,8 @@ namespace jack_compiler.Listener
         public override void ExitWhileStatement([NotNull] JackParserParser.WhileStatementContext context)
         {
             var exitLoopLabel = labels.Pop();
-            var loolLabel = labels.Pop();
-            writer.WriteIf($"{className}_{loolLabel}");
+            var loopLabel = labels.Pop();
+            writer.WriteGoto($"{className}_{loopLabel}");
             writer.WriteLabel($"{className}_{exitLoopLabel}");
             labels.Push(labelIdx);
             labelIdx++;

@@ -38,7 +38,10 @@ statement: letStatement
 
 letStatement: LET ID ('[' expression ']') ? '=' expression ';';
 
-ifStatement: IF '(' expression ')' '{' statements '}' (ELSE '{' statements '}')?;
+ifStatement: IF '(' ifStatementExpression ')' '{' ifStatements '}' (ELSE '{' elseStatements '}')?;
+ifStatementExpression: expression;
+ifStatements: statements;
+elseStatements: statements;
 
 whileStatement: WHILE '(' whileStatementExpression ')' '{' statements '}';
 whileStatementExpression: expression;
