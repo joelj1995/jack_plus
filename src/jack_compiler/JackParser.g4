@@ -36,7 +36,10 @@ statement: letStatement
     | returnStatement
     ;
 
-letStatement: LET ID ('[' expression ']') ? '=' expression ';';
+letStatement: LET ID '=' expression ';'       #LetVarStatement
+    | LET ID letArrayIndex '=' expression ';' #LetArrayStatement
+    ;
+letArrayIndex: '[' expression ']';
 
 ifStatement: IF '(' ifStatementExpression ')' '{' ifStatements '}' (ELSE '{' elseStatements '}')?;
 ifStatementExpression: expression;

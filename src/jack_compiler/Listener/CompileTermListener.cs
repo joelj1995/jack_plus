@@ -74,6 +74,33 @@ namespace jack_compiler.Listener
             }
         }
 
+        public override void ExitTermArray([NotNull] JackParserParser.TermArrayContext context)
+        {
+            var value = context.ID().GetText();
+            var kind = symbolTable.KindOf(value);
+            var idx = symbolTable.IndexOf(value);
+            switch (kind)
+            {
+                case VarKind.STATIC:
+                    writer.WritePush(JackVMWriter.JackSegment.STATIC, idx);
+                    break;
+                case VarKind.FIELD:
+                    writer.WritePush(JackVMWriter.JackSegment.THIS, idx);
+                    break;
+                case VarKind.ARG:
+                    writer.WritePush(JackVMWriter.JackSegment.ARGUMENT, idx);
+                    break;
+                case VarKind.VAR:
+                    writer.WritePush(JackVMWriter.JackSegment.LOCAL, idx);
+                    break;
+                case VarKind.NONE:
+                default: throw new NotImplementedException();
+            }
+            writer.WriteArithmetic(JackVMWriter.JackCommand.ADD);
+            writer.WritePop(JackVMWriter.JackSegment.POINTER, 1);
+            writer.WritePush(JackVMWriter.JackSegment.THAT, 0);
+        }
+
         public override void ExitTermUnary([NotNull] JackParserParser.TermUnaryContext context)
         {
             switch (context.unaryOp().GetText())

@@ -9,7 +9,12 @@ namespace jack_compiler.Listener
 {
     internal partial class CompileListener
     {
-        public override void ExitLetStatement([NotNull] JackParserParser.LetStatementContext context)
+        public override void ExitLetArrayIndex([NotNull] JackParserParser.LetArrayIndexContext context)
+        {
+            writer.WriteArithmetic(JackVMWriter.JackCommand.ADD);
+        }
+
+        public override void ExitLetVarStatement([NotNull] JackParserParser.LetVarStatementContext context)
         {
             var value = context.ID().GetText();
             var idx = symbolTable.IndexOf(value);
@@ -31,6 +36,38 @@ namespace jack_compiler.Listener
                 case VarKind.NONE:
                 default: throw new NotImplementedException();
             }
+        }
+
+        public override void EnterLetArrayStatement([NotNull] JackParserParser.LetArrayStatementContext context)
+        {
+            var value = context.ID().GetText();
+            var idx = symbolTable.IndexOf(value);
+            var kind = symbolTable.KindOf(value);
+            switch (kind)
+            {
+                case VarKind.STATIC:
+                    writer.WritePop(JackVMWriter.JackSegment.STATIC, idx);
+                    break;
+                case VarKind.FIELD:
+                    writer.WritePop(JackVMWriter.JackSegment.THIS, idx);
+                    break;
+                case VarKind.ARG:
+                    writer.WritePop(JackVMWriter.JackSegment.ARGUMENT, idx);
+                    break;
+                case VarKind.VAR:
+                    writer.WritePop(JackVMWriter.JackSegment.LOCAL, idx);
+                    break;
+                case VarKind.NONE:
+                default: throw new NotImplementedException();
+            }
+        }
+
+        public override void ExitLetArrayStatement([NotNull] JackParserParser.LetArrayStatementContext context)
+        {
+            writer.WritePop(JackVMWriter.JackSegment.TEMP, 0);
+            writer.WritePop(JackVMWriter.JackSegment.POINTER, 1);
+            writer.WritePush(JackVMWriter.JackSegment.TEMP, 0);
+            writer.WritePop(JackVMWriter.JackSegment.THAT, 0);
         }
 
         public override void EnterIfStatement([NotNull] JackParserParser.IfStatementContext context)
