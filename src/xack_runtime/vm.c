@@ -1,4 +1,5 @@
 #include "vm.h"
+#include "xack_native.h"
 
 VM vm;
 
@@ -313,24 +314,27 @@ int execute(Chunk* chunk) {
         {
             int callIdx = READ_WORD();
             FunctionCall callData = chunk->function_calls[callIdx];
-            Function callee = chunk->functions[callData.function_idx];
-            uint16_t returnPos = vm.ip - vm.chunk->code;
-            push(returnPos);
-            push(vm.ram[SEG_LCL]);
-            push(vm.ram[SEG_ARG]);
-            push(vm.ram[SEG_THIS]);
-            push(vm.ram[SEG_THAT]);
-            vm.ram[SEG_ARG] = vm.ram[SEG_SP] - 5 - callData.n_args;
-            vm.ram[SEG_LCL] = vm.ram[SEG_SP];
-            vm.ip = vm.chunk->code + chunk->functions[callData.function_idx].offset;
             if (callData.is_native)
             {
                 printf("Native functions not implemented.\n");
-                exit(-1);
+                native_functions[callData.function_idx].fn();
             }
-            for (int i = 0; i < chunk->functions[callData.function_idx].n_vars; i++)
+            else
             {
-                push(0);
+                Function callee = chunk->functions[callData.function_idx];
+                uint16_t returnPos = vm.ip - vm.chunk->code;
+                push(returnPos);
+                push(vm.ram[SEG_LCL]);
+                push(vm.ram[SEG_ARG]);
+                push(vm.ram[SEG_THIS]);
+                push(vm.ram[SEG_THAT]);
+                vm.ram[SEG_ARG] = vm.ram[SEG_SP] - 5 - callData.n_args;
+                vm.ram[SEG_LCL] = vm.ram[SEG_SP];
+                vm.ip = vm.chunk->code + chunk->functions[callData.function_idx].offset;
+                for (int i = 0; i < chunk->functions[callData.function_idx].n_vars; i++)
+                {
+                    push(0);
+                }
             }
             break;
         }

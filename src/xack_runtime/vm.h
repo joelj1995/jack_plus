@@ -27,4 +27,8 @@ extern VM vm;
 
 int execute(Chunk* chunk);
 
+void push(int16_t word);
+int16_t pop();
+
+
 #endif
