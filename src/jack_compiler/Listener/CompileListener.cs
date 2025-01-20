@@ -28,6 +28,5 @@ namespace jack_compiler.Listener
         private readonly JackVMWriter writer;
         private readonly SymbolTable symbolTable = new SymbolTable();
         private int labelIdx = 0;
-        private Stack<int> labels = new Stack<int>();
     }
 }

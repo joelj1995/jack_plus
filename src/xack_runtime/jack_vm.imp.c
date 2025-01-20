@@ -4,11 +4,9 @@
 
 char* dupstr(char* str)
 {
-    printf("dubplicating string\n");
     int len = strlen(str);
     char* newstr = malloc(len + 1);
     strcpy(newstr, str);
-    printf("done duplicating\n");
     return newstr;
 }
 

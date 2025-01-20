@@ -72,56 +72,62 @@ namespace jack_compiler.Listener
 
         public override void EnterIfStatement([NotNull] JackParserParser.IfStatementContext context)
         {
-            
+            ifLabels.Push(new IfLabels
+            {
+                SkipIf = labelIdx++,
+                SkipElse = labelIdx++,
+            });
         }
 
         public override void ExitIfStatementExpression([NotNull] JackParserParser.IfStatementExpressionContext context)
         {
+            var labels = ifLabels.Peek();
             writer.WriteArithmetic(JackVMWriter.JackCommand.NOT);
-            var skipLabel = labelIdx;
-            labels.Push(skipLabel);
-            writer.WriteIf($"{className}_{labelIdx}");
+            writer.WriteIf($"{className}_{labels.SkipIf}");
             labelIdx++;
         }
 
         public override void ExitIfStatements([NotNull] JackParserParser.IfStatementsContext context)
         {
-            var skipLabel = labels.Pop();
-            var skipElseLabel = labelIdx;
-            labels.Push(skipLabel);
-            labelIdx++;
-            writer.WriteGoto($"{className}_{skipElseLabel}");
-            writer.WriteLabel($"{className}_{skipLabel}");
+            var labels = ifLabels.Peek();
+            writer.WriteGoto($"{className}_{labels.SkipElse}");
+            writer.WriteLabel($"{className}_{labels.SkipIf}");
         }
 
         public override void ExitElseStatements([NotNull] JackParserParser.ElseStatementsContext context)
         {
-            var skipElseLabel = labels.Pop();
-            writer.WriteLabel($"{className}_{skipElseLabel}");
+            
+        }
+
+        public override void ExitIfStatement([NotNull] JackParserParser.IfStatementContext context)
+        {
+            var labels = ifLabels.Peek();
+            writer.WriteLabel($"{className}_{labels.SkipElse}");
+            ifLabels.Pop();
         }
 
         public override void EnterWhileStatement([NotNull] JackParserParser.WhileStatementContext context)
         {
             writer.WriteLabel($"{className}_{labelIdx}");
-            labels.Push(labelIdx);
+            whileLabels.Push(labelIdx);
             labelIdx++;
         }
 
         public override void ExitWhileStatementExpression([NotNull] JackParserParser.WhileStatementExpressionContext context)
         {
             writer.WriteArithmetic(JackVMWriter.JackCommand.NOT);
-            labels.Push(labelIdx);
+            whileLabels.Push(labelIdx);
             writer.WriteIf($"{className}_{labelIdx}");
             labelIdx++;
         }
 
         public override void ExitWhileStatement([NotNull] JackParserParser.WhileStatementContext context)
         {
-            var exitLoopLabel = labels.Pop();
-            var loopLabel = labels.Pop();
+            var exitLoopLabel = whileLabels.Pop();
+            var loopLabel = whileLabels.Pop();
             writer.WriteGoto($"{className}_{loopLabel}");
             writer.WriteLabel($"{className}_{exitLoopLabel}");
-            labels.Push(labelIdx);
+            whileLabels.Push(labelIdx);
             labelIdx++;
         }
 
@@ -138,5 +144,14 @@ namespace jack_compiler.Listener
             }
             writer.WriteReturn();
         }
+
+        private Stack<int> whileLabels = new Stack<int>();
+        private Stack<IfLabels> ifLabels = new Stack<IfLabels>();
     }
+
+    public record IfLabels
+    {
+        public int SkipIf { get; init; }
+        public int SkipElse { get; init; }
+    };
 }

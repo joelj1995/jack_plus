@@ -45,7 +45,7 @@ void find_entry_point(Chunk* chunk)
 {
     for (int i = 0; i < chunk->function_count; i++)
     {
-        if (strcmp(chunk->functions[i].name, "Main.main") == 0)
+        if (strcmp(chunk->functions[i].name, "Sys.init") == 0)
         {
             chunk->entry_function_idx = i;
             return;
