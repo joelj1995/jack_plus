@@ -69,11 +69,22 @@ void native_string_appendchar()
 {
     uint16_t _this = pop();
     uint16_t c = pop();
-    printf("Appending %c at memory location %d", c, vm.ram[_this+SF_CURLENGTH] + vm.ram[_this+SF_STR]);
     uint16_t stringBase = vm.ram[_this+SF_CURLENGTH] + vm.ram[_this+SF_STR];
     vm.ram[_this+SF_CURLENGTH] += 1;
     vm.ram[stringBase] = c;
     push(_this);
+}
+
+void native_output_printstring()
+{
+    uint16_t s = pop();
+    uint16_t s_len = vm.ram[s+SF_CURLENGTH];
+    uint16_t stringBase = vm.ram[s+SF_STR];
+    for (int i = 0; i < s_len; i++)
+    {
+        printf("%c", vm.ram[stringBase+i]);
+    }
+    push(0);
 }
 
 NativeFunction native_functions[] = {
@@ -85,6 +96,7 @@ NativeFunction native_functions[] = {
     {"Array.dispose", native_array_dispose},
     {"String.new", native_string_new},
     {"String.appendChar", native_string_appendchar},
+    {"Output.printString", native_output_printstring},
     {"", 0}
 };
 
