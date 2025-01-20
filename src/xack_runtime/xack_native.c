@@ -25,12 +25,20 @@ void native_mem_poke()
     int16_t value = pop();
     uint16_t address = pop();
     vm.ram[address] = value;
+    push(0);
+}
+
+void native_mem_dealloc()
+{
+    uint16_t address = pop();
+    push(0);
 }
 
 NativeFunction native_functions[] = {
     {"Memory.alloc", native_mem_alloc},
     {"Memory.peek", native_mem_peek},
     {"Memory.poke", native_mem_poke},
+    {"Memory.deAlloc", native_mem_dealloc},
     {"", 0}
 };
 

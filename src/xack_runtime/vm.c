@@ -83,7 +83,7 @@ int execute(Chunk* chunk) {
 #ifdef DEBUG_LOGGING
         printf("      ");
         
-        for (int16_t* slot = &vm.ram[255]; slot < &vm.ram[HACK_SP]; slot++)
+        for (int16_t* slot = &vm.ram[256]; slot < &vm.ram[HACK_SP]; slot++)
         {
             if (vm.ram[SEG_ARG] == slot - vm.ram)
             {

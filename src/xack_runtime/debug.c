@@ -1,5 +1,6 @@
 #include "common.h"
 #include "debug.h"
+#include "xack_native.h"
 
 void disassemble_segment(uint16_t byte)
 {
@@ -115,10 +116,15 @@ void disassemble_chunk(Chunk* chunk)
         {
             int callIdx = chunk->code[++i];
             FunctionCall callData = chunk->function_calls[callIdx];
-            printf("call %d -> %d", callIdx, chunk->functions[callData.function_idx].offset);
+            
             if (callData.is_native)
             {
+                printf("call %d -> %s", callIdx, native_functions[callData.function_idx].name);
                 printf(" [native]");
+            }
+            else
+            {
+                printf("call %d -> %d", callIdx, chunk->functions[callData.function_idx].offset);
             }
             printf("\n");
         }
