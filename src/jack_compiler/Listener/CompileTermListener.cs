@@ -124,6 +124,11 @@ namespace jack_compiler.Listener
             switch (kind)
             {
                 case VarKind.NONE:
+                    if (methodId == "new")
+                    {
+                        writer.WritePush(JackVMWriter.JackSegment.CONSTANT, classArguments[objectOrClassId]);
+                        writer.WriteCall("Memory.alloc", 1);
+                    }
                     writer.WriteCall($"{objectOrClassId}.{methodId}", nArgs);
                     break;
                 case VarKind.STATIC:

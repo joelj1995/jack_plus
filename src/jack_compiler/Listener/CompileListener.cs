@@ -9,9 +9,10 @@ namespace jack_compiler.Listener
 {
     internal partial class CompileListener : JackParserBaseListener
     {
-        public CompileListener(JackVMWriter writer) 
+        public CompileListener(JackVMWriter writer, IDictionary<string, int> classArguments) 
         {
             this.writer = writer;
+            this.classArguments = classArguments;
         }
 
         public override void EnterClass([NotNull] JackParserParser.ClassContext context)
@@ -28,5 +29,6 @@ namespace jack_compiler.Listener
         private readonly JackVMWriter writer;
         private readonly SymbolTable symbolTable = new SymbolTable();
         private int labelIdx = 0;
+        private IDictionary<string, int> classArguments;
     }
 }
