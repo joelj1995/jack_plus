@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "compiler.h"
+#include "xack_native.h"
 
 void replace_labels(Chunk* chunk)
 {
@@ -30,11 +31,23 @@ void replace_calls(Chunk* chunk)
             if (strcmp(name, function_name) == 0)
             {
                 chunk->function_calls[i].function_idx = j;
+                chunk->function_calls[i].is_native = false;
                 found = true;
             }
         }
         if (!found)
         {
+            for (int i = 0; ; i++)
+            {
+                if (native_functions[i].fn == 0)
+                    break;
+                if (strcmp(name, native_functions->name) == 0)
+                {
+                    chunk->function_calls[i].function_idx = i;
+                    chunk->function_calls[i].is_native = true;
+                    return;
+                }
+            }
             printf("Could not find function matching %s.\n", name);
             exit(EEC_COMPILATION_ERROR);
         }

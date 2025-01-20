@@ -47,6 +47,7 @@ typedef struct {
     char* name;
     uint16_t n_args;
     int function_idx;
+    bool is_native;
 } FunctionCall;
 
 typedef struct {

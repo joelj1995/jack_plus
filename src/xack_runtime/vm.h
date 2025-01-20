@@ -18,6 +18,9 @@ typedef struct {
     Chunk* chunk;
     uint16_t* ip;
     int16_t ram[MEMORY_LENGTH];
+    uint16_t pheap;
+    uint16_t pheadend;
+    uint16_t free;
 } VM;
 
 extern VM vm;

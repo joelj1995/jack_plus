@@ -49,6 +49,10 @@ int execute(Chunk* chunk) {
         printf("Tried to run a chunk that isn't compiled.");
         exit(EEC_BAD_STATE);
     }
+
+    vm.pheap = 2028;
+    vm.pheadend = 16383;
+    vm.free = vm.pheap;
     
 #define READ_WORD() *vm.ip++;
     vm.chunk = chunk;
@@ -319,6 +323,11 @@ int execute(Chunk* chunk) {
             vm.ram[SEG_ARG] = vm.ram[SEG_SP] - 5 - callData.n_args;
             vm.ram[SEG_LCL] = vm.ram[SEG_SP];
             vm.ip = vm.chunk->code + chunk->functions[callData.function_idx].offset;
+            if (callData.is_native)
+            {
+                printf("Native functions not implemented.\n");
+                exit(-1);
+            }
             for (int i = 0; i < chunk->functions[callData.function_idx].n_vars; i++)
             {
                 push(0);
