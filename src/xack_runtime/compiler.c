@@ -67,6 +67,14 @@ void find_entry_point(Chunk* chunk)
             return;
         }
     }
+    for (int i = 0; i < chunk->function_count; i++)
+    {
+        if (strcmp(chunk->functions[i].name, "Main.main") == 0)
+        {
+            chunk->entry_function_idx = i;
+            return;
+        }
+    }
 }
 
 void compile(Chunk* chunk)
