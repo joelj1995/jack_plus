@@ -4,16 +4,18 @@
 
 char* dupstr(char* str)
 {
+    printf("dubplicating string\n");
     int len = strlen(str);
-    char* newstr = malloc(len);
+    char* newstr = malloc(len + 1);
     strcpy(newstr, str);
+    printf("done duplicating\n");
     return newstr;
 }
 
 char* addstr(char* str1, char* str2)
 {
     int len = strlen(str1) + strlen(str2);
-    char* newstr = malloc(len);
+    char* newstr = malloc(len + 1);
     strcpy(newstr, str1);
     strcat(newstr, str2);
     return newstr;

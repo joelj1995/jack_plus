@@ -15,12 +15,16 @@ int main(int argc, char *argv[])
     Chunk chunk_on_stack;
     the_chunk = &chunk_on_stack;
 
+    printf("Initializing chunk.\n");
     init_chunk(the_chunk);
 
+    printf("Parsing.\n");
     yyparse();
 
+    printf("Compiling.\n");
     compile(the_chunk);
 
+    printf("Executing.\n");
     execute(the_chunk);
 
     printf("Done!\n");

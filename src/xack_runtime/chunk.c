@@ -29,6 +29,11 @@ void write_chunk(Chunk* chunk, uint16_t byte)
 
 void label_goto(Chunk* chunk, uint16_t op, char* label)
 {
+    if (chunk->goto_label_count == 256)
+    {
+        printf("Too many gotos\n");
+        exit(EEC_OVERLOW);
+    }
     write_chunk(chunk, op);
     chunk->goto_labels[chunk->goto_label_count].name = label;
     chunk->goto_labels[chunk->goto_label_count++].offset = chunk->count;
@@ -49,6 +54,11 @@ void label_chunk(Chunk* chunk, char* label)
 
 void label_function(Chunk* chunk, char* name, uint16_t n_vars)
 {
+    if (chunk->function_count == 256)
+    {
+        printf("Too many functions.\n");
+        exit(EEC_OVERLOW);
+    }
     chunk->functions[chunk->function_count].name = name;
     chunk->functions[chunk->function_count].n_vars = n_vars;
     chunk->functions[chunk->function_count++].offset = (uint16_t)chunk->count;
@@ -56,6 +66,11 @@ void label_function(Chunk* chunk, char* name, uint16_t n_vars)
 
 void label_call(Chunk* chunk, char* name, uint16_t n_args)
 {
+    if (chunk->function_call_count == 256)
+    {
+        printf("Too many function calls.\n");
+        exit(EEC_OVERLOW);
+    }
     write_chunk(chunk,OP_CALL);
     write_chunk(chunk,chunk->function_call_count);
     chunk->function_calls[chunk->function_call_count].name = name;
