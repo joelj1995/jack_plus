@@ -127,18 +127,32 @@ namespace jack_compiler.Listener
                     writer.WriteCall($"{objectOrClassId}.{methodId}", nArgs);
                     break;
                 case VarKind.STATIC:
-                    // TODO
+                    {
+                        var type = symbolTable.TypeOf(objectOrClassId);
+                        writer.WritePush(JackVMWriter.JackSegment.STATIC, symbolTable.IndexOf(objectOrClassId));
+                        writer.WriteCall($"{type}.{methodId}", nArgs + 1);
+                    }
                     break;
                 case VarKind.FIELD:
-                    // TODO
+                    {
+                        var type = symbolTable.TypeOf(objectOrClassId);
+                        writer.WritePush(JackVMWriter.JackSegment.THIS, symbolTable.IndexOf(objectOrClassId));
+                        writer.WriteCall($"{type}.{methodId}", nArgs + 1);
+                    }
                     break;
                 case VarKind.ARG:
-                    // TODO
+                    {
+                        var type = symbolTable.TypeOf(objectOrClassId);
+                        writer.WritePush(JackVMWriter.JackSegment.ARGUMENT, symbolTable.IndexOf(objectOrClassId));
+                        writer.WriteCall($"{type}.{methodId}", nArgs + 1);
+                    }
                     break;
                 case VarKind.VAR:
-                    var type = symbolTable.TypeOf(objectOrClassId);
-                    writer.WritePush(JackVMWriter.JackSegment.LOCAL, symbolTable.IndexOf(objectOrClassId));
-                    writer.WriteCall($"{type}.{methodId}", nArgs + 1);
+                    {
+                        var type = symbolTable.TypeOf(objectOrClassId);
+                        writer.WritePush(JackVMWriter.JackSegment.LOCAL, symbolTable.IndexOf(objectOrClassId));
+                        writer.WriteCall($"{type}.{methodId}", nArgs + 1);
+                    }
                     break;
                 default: throw new NotImplementedException();
             }
