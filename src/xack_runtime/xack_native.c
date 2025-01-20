@@ -12,7 +12,8 @@ NativeFunction native_functions[] = {
 
 void native_mem_alloc()
 {
-    int16_t param = pop();
-    printf("in native_mem_alloc called with: %d", param);
-    push(16);
+    int16_t size = pop();
+    int result = vm.free;
+    vm.free = vm.free + size;
+    push(result);
 }

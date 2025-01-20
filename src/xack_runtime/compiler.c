@@ -37,19 +37,22 @@ void replace_calls(Chunk* chunk)
         }
         if (!found)
         {
-            for (int i = 0; ; i++)
+            for (int j = 0; ; j++)
             {
-                if (native_functions[i].fn == 0)
+                if (native_functions[j].fn == 0)
                     break;
                 if (strcmp(name, native_functions->name) == 0)
                 {
-                    chunk->function_calls[i].function_idx = i;
+                    chunk->function_calls[i].function_idx = j;
                     chunk->function_calls[i].is_native = true;
-                    return;
+                    found = true;
                 }
             }
-            printf("Could not find function matching %s.\n", name);
-            exit(EEC_COMPILATION_ERROR);
+            if (!found)
+            {
+                printf("Could not find function matching %s.\n", name);
+                exit(EEC_COMPILATION_ERROR);
+            }
         }
     }
 }

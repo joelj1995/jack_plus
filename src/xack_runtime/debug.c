@@ -115,7 +115,12 @@ void disassemble_chunk(Chunk* chunk)
         {
             int callIdx = chunk->code[++i];
             FunctionCall callData = chunk->function_calls[callIdx];
-            printf("call %d -> %d\n", callIdx, chunk->functions[callData.function_idx].offset);
+            printf("call %d -> %d", callIdx, chunk->functions[callData.function_idx].offset);
+            if (callData.is_native)
+            {
+                printf(" [native]");
+            }
+            printf("\n");
         }
         else if (chunk->code[i] == OP_NOP)
         {

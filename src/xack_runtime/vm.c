@@ -51,7 +51,7 @@ int execute(Chunk* chunk) {
         exit(EEC_BAD_STATE);
     }
 
-    vm.pheap = 2028;
+    vm.pheap = 2048;
     vm.pheadend = 16383;
     vm.free = vm.pheap;
     
@@ -316,7 +316,6 @@ int execute(Chunk* chunk) {
             FunctionCall callData = chunk->function_calls[callIdx];
             if (callData.is_native)
             {
-                printf("Native functions not implemented.\n");
                 native_functions[callData.function_idx].fn();
             }
             else
