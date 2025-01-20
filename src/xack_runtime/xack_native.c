@@ -5,11 +5,6 @@
 
 extern VM vm;
 
-NativeFunction native_functions[] = {
-    {"Memory.alloc", native_mem_alloc},
-    {"", 0}
-};
-
 void native_mem_alloc()
 {
     int16_t size = pop();
@@ -17,3 +12,16 @@ void native_mem_alloc()
     vm.free = vm.free + size;
     push(result);
 }
+
+void native_mem_peek()
+{
+    uint16_t address = pop();
+    push(vm.ram[address]);
+}
+
+NativeFunction native_functions[] = {
+    {"Memory.alloc", native_mem_alloc},
+    {"Memory.peek", native_mem_peek},
+    {"", 0}
+};
+

@@ -8,8 +8,6 @@ typedef struct {
     NativeFn fn;
 } NativeFunction;
 
-void native_mem_alloc();
-
 extern NativeFunction native_functions[];
 
 #endif

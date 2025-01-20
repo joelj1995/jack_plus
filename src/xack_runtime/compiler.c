@@ -41,7 +41,7 @@ void replace_calls(Chunk* chunk)
             {
                 if (native_functions[j].fn == 0)
                     break;
-                if (strcmp(name, native_functions->name) == 0)
+                if (strcmp(name, native_functions[j].name) == 0)
                 {
                     chunk->function_calls[i].function_idx = j;
                     chunk->function_calls[i].is_native = true;
