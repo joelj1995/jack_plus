@@ -19,8 +19,8 @@ namespace jack_compiler.Listener
         {
             var value = context.GetText();
             value = value.Substring(1, value.Length - 2);
-            writer.WritePush(JackVMWriter.JackSegment.CONSTANT, 0);
             writer.WritePush(JackVMWriter.JackSegment.CONSTANT, value.Length);
+            writer.WritePush(JackVMWriter.JackSegment.CONSTANT, 3);
             writer.WriteCall("Memory.alloc", 1);
             writer.WriteCall("String.new", 1);
             for (int i = 0; i < value.Length; i++)
@@ -117,6 +117,44 @@ namespace jack_compiler.Listener
             }
         }
 
+        public override void EnterThatSubroutineCall([NotNull] JackParserParser.ThatSubroutineCallContext context)
+        {
+            var objectOrClassId = context.ID(0).GetText();
+            var methodId = context.ID(1).GetText();
+            var kind = symbolTable.KindOf(objectOrClassId);
+            var nArgs = context.expressionList().expression().Length;
+            switch (kind)
+            {
+                case VarKind.NONE:
+                    break;
+                case VarKind.STATIC:
+                    {
+                        var type = symbolTable.TypeOf(objectOrClassId);
+                        writer.WritePush(JackVMWriter.JackSegment.STATIC, symbolTable.IndexOf(objectOrClassId));
+                    }
+                    break;
+                case VarKind.FIELD:
+                    {
+                        var type = symbolTable.TypeOf(objectOrClassId);
+                        writer.WritePush(JackVMWriter.JackSegment.THIS, symbolTable.IndexOf(objectOrClassId));
+                    }
+                    break;
+                case VarKind.ARG:
+                    {
+                        var type = symbolTable.TypeOf(objectOrClassId);
+                        writer.WritePush(JackVMWriter.JackSegment.ARGUMENT, symbolTable.IndexOf(objectOrClassId));
+                    }
+                    break;
+                case VarKind.VAR:
+                    {
+                        var type = symbolTable.TypeOf(objectOrClassId);
+                        writer.WritePush(JackVMWriter.JackSegment.LOCAL, symbolTable.IndexOf(objectOrClassId));
+                    }
+                    break;
+                default: throw new NotImplementedException();
+            }
+        }
+
         public override void ExitThatSubroutineCall([NotNull] JackParserParser.ThatSubroutineCallContext context)
         {
             var objectOrClassId = context.ID(0).GetText();
@@ -136,28 +174,24 @@ namespace jack_compiler.Listener
                 case VarKind.STATIC:
                     {
                         var type = symbolTable.TypeOf(objectOrClassId);
-                        writer.WritePush(JackVMWriter.JackSegment.STATIC, symbolTable.IndexOf(objectOrClassId));
                         writer.WriteCall($"{type}.{methodId}", nArgs + 1);
                     }
                     break;
                 case VarKind.FIELD:
                     {
                         var type = symbolTable.TypeOf(objectOrClassId);
-                        writer.WritePush(JackVMWriter.JackSegment.THIS, symbolTable.IndexOf(objectOrClassId));
                         writer.WriteCall($"{type}.{methodId}", nArgs + 1);
                     }
                     break;
                 case VarKind.ARG:
                     {
                         var type = symbolTable.TypeOf(objectOrClassId);
-                        writer.WritePush(JackVMWriter.JackSegment.ARGUMENT, symbolTable.IndexOf(objectOrClassId));
                         writer.WriteCall($"{type}.{methodId}", nArgs + 1);
                     }
                     break;
                 case VarKind.VAR:
                     {
                         var type = symbolTable.TypeOf(objectOrClassId);
-                        writer.WritePush(JackVMWriter.JackSegment.LOCAL, symbolTable.IndexOf(objectOrClassId));
                         writer.WriteCall($"{type}.{methodId}", nArgs + 1);
                     }
                     break;

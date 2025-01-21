@@ -60,7 +60,8 @@ void native_string_new()
     {
         push(maxLength);
         native_mem_alloc();
-        vm.ram[mem + SF_STR] = pop();
+        uint16_t s_mem = pop();
+        vm.ram[mem + SF_STR] = s_mem;
     }
     push(mem);
 }
@@ -73,6 +74,42 @@ void native_string_appendchar()
     vm.ram[_this+SF_CURLENGTH] += 1;
     vm.ram[stringBase] = c;
     push(_this);
+}
+
+void native_string_intvalue()
+{
+    uint16_t _this = pop();
+    int i = 0;
+    bool done = false;
+    bool negate = false;
+    int sum = 0;
+    int curLength = vm.ram[_this+SF_CURLENGTH];
+#define STR_I vm.ram[vm.ram[_this+SF_STR] + i]
+    if (curLength > 0) {
+        if (STR_I == 45) {
+            negate = true;
+            i = 1;
+        }
+    }
+    while (true) {
+        if ((i >= curLength) || done) {
+            if (negate) {
+                push(-sum);
+                return;
+            }
+            push(sum);
+            return;
+        }
+        if (STR_I > 47 & STR_I < 58) {
+            sum = (sum * 10) + (STR_I - 48); 
+        }
+        else {
+            done = true;
+        }
+        i = i + 1;
+    }
+    push(0);
+#undef STR_I
 }
 
 void native_output_printstring()
@@ -96,6 +133,7 @@ NativeFunction native_functions[] = {
     {"Array.dispose", native_array_dispose},
     {"String.new", native_string_new},
     {"String.appendChar", native_string_appendchar},
+    {"String.intValue", native_string_intvalue},
     {"Output.printString", native_output_printstring},
     {"", 0}
 };
