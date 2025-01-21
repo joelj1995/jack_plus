@@ -19,7 +19,9 @@ namespace jack_compiler.Listener
         {
             var value = context.GetText();
             value = value.Substring(1, value.Length - 2);
+            writer.WritePush(JackVMWriter.JackSegment.CONSTANT, 0);
             writer.WritePush(JackVMWriter.JackSegment.CONSTANT, value.Length);
+            writer.WriteCall("Memory.alloc", 1);
             writer.WriteCall("String.new", 1);
             for (int i = 0; i < value.Length; i++)
             {

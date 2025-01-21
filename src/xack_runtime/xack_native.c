@@ -67,8 +67,8 @@ void native_string_new()
 
 void native_string_appendchar()
 {
-    uint16_t _this = pop();
     uint16_t c = pop();
+    uint16_t _this = pop();
     uint16_t stringBase = vm.ram[_this+SF_CURLENGTH] + vm.ram[_this+SF_STR];
     vm.ram[_this+SF_CURLENGTH] += 1;
     vm.ram[stringBase] = c;
