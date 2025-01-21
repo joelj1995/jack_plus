@@ -124,6 +124,19 @@ void native_output_printstring()
     push(0);
 }
 
+void native_output_int()
+{
+    int16_t the_int = pop();
+    printf("%d", the_int);
+}
+
+void native_math_multiply()
+{
+    int16_t b = pop();
+    int16_t a = pop();
+    push(a * b);
+}
+
 NativeFunction native_functions[] = {
     {"Memory.alloc", native_mem_alloc},
     {"Memory.peek", native_mem_peek},
@@ -135,6 +148,8 @@ NativeFunction native_functions[] = {
     {"String.appendChar", native_string_appendchar},
     {"String.intValue", native_string_intvalue},
     {"Output.printString", native_output_printstring},
+    {"Output.printInt", native_output_int},
+    {"Math.multiply", native_math_multiply},
     {"", 0}
 };
 
