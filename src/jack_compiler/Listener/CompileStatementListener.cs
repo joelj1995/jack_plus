@@ -94,11 +94,6 @@ namespace jack_compiler.Listener
             writer.WriteLabel($"{className}_{labels.SkipIf}");
         }
 
-        public override void ExitElseStatements([NotNull] JackParserParser.ElseStatementsContext context)
-        {
-            
-        }
-
         public override void ExitIfStatement([NotNull] JackParserParser.IfStatementContext context)
         {
             var labels = ifLabels.Peek();
